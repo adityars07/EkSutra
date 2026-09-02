@@ -1,4 +1,23 @@
 services:
+  backend:
+    container_name: govtIP
+    image: arpanel/govtIP
+    restart: on-failure
+    ports:
+      - "8080:8080"
+    networks:
+      - monitoring
+    depends_on: mongo
+
+  mongo:
+    container_name: mongo
+    image: mongo:latest
+    restart: unless-stopped
+    networks:
+      - monitoring
+    ports:
+      - "27017:27017"
+
   prometheus:
     container_name: prometheus
     image: prom/prometheus:latest
