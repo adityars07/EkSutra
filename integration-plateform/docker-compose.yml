@@ -1,0 +1,55 @@
+services:
+  backend:
+    container_name: govtIP
+    image: arpanel/govtIP
+    restart: on-failure
+    ports:
+      - "8080:8080"
+    networks:
+      - monitoring
+    depends_on: mongo
+
+  mongo:
+    container_name: mongo
+    image: mongo:latest
+    restart: unless-stopped
+    networks:
+      - monitoring
+    ports:
+      - "27017:27017"
+
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:latest
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    networks:
+      - monitoring
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  grafana:
+    container_name: grafana
+    image: grafana/grafana-oss:latest
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+    networks:
+      - monitoring
+networks:
+    monitoring:
+      driver: bridge
+volumes:
+  grafana_data:
+  prometheus_data:
+
+
