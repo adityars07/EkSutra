@@ -1,13 +1,27 @@
 services:
   backend:
-    container_name: govtIP
-    image: arpanel/govtIP
+    container_name: govtip
+    image: arpanel/govtip
     restart: on-failure
     ports:
       - "8080:8080"
     networks:
       - monitoring
-    depends_on: mongo
+    depends_on:
+      - mongo
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: eksutra-frontend
+    ports:
+      - "5173:5173"
+    environment:
+      API_PROXY_TARGET: http://backend:8080
+    depends_on:
+      - backend
+    networks:
+      - monitoring
 
   mongo:
     container_name: mongo
