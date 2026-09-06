@@ -1,7 +1,7 @@
 services:
   backend:
     container_name: govtip
-    image: arpanel/govtip
+    image: arpanel/govtip:v1.1.0
     restart: on-failure
     ports:
       - "8080:8080"
