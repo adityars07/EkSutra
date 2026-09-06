@@ -1,0 +1,42 @@
+kind: StatefulSet 
+apiVersion: apps/v1 
+metadata: 
+  name: mongo 
+  namespace: govt-ip 
+spec: 
+  replicas: 1 
+  serviceName: mongo-service 
+  selector: 
+    matchLabels:
+      app: mongo 
+  template: 
+    metadata: 
+      labels: 
+        app: mongo 
+    spec: 
+      containers: 
+        - name: mongo 
+          image: mongo:7 
+          port: 
+            - containerPort: 27017 
+          env: 
+            - name: MONGO_INTIDB_ROOT_USERNAME
+              valueFrom: 
+                configKeyMapRef: 
+                  name: configmap 
+                  key: mongo-username 
+            - name: MONGO_INITDB_ROOT_PASSWORD 
+              valueFrom: 
+                secretKeyRef: 
+                  name: secret 
+                  key: mongo-password 
+          volumeMounts: 
+            - mountPath: /data/db 
+              name: mongo-volume 
+      volumes: 
+        - name: mongo-volume 
+          persistentVolumeClaim: 
+            claimName: mongo-pvc
+
+
+          
