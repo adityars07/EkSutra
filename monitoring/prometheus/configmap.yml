@@ -1,0 +1,23 @@
+kind: ConfigMap 
+apiVersion: v1
+metadata: 
+  name: prometheus-configmap 
+  namespace: monitoring 
+data: 
+  prometheus.yml: |
+    global: 
+      scrape_interval: 15s 
+    scrape_configs: 
+      - job_name: prometheus 
+        static_configs: 
+          - targets: 
+              - localhost:9090 
+          labels: 
+            app: prometheus 
+      - job_name: 
+        static_configs: 
+          - target: 
+              - backend-service.govt-ip.svc.cluster.local:8080
+            labels: 
+              app: integration-plateform
+              

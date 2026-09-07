@@ -1,0 +1,15 @@
+kind: PersistentVolume 
+apiVersion: v1 
+metadata: 
+  name: prometheus-pv 
+  namespace: monitoring 
+spec: 
+  storageClassName: prometheus-storage 
+  capacity: 
+    storage: 5Gi 
+  persistentVolumeReclaimPolicy: Retain 
+  accessMode: 
+    - ReadWriteOnce
+  hostPath: 
+    path: /prometheus 
+    type: DirectoryOrCreate
