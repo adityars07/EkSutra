@@ -17,12 +17,12 @@ spec:
       containers: 
         - name: mongo 
           image: mongo:7 
-          port: 
+          ports: 
             - containerPort: 27017 
           env: 
             - name: MONGO_INTIDB_ROOT_USERNAME
               valueFrom: 
-                configKeyMapRef: 
+                configMapKeyRef: 
                   name: configmap 
                   key: mongo-username 
             - name: MONGO_INITDB_ROOT_PASSWORD 

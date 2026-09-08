@@ -9,7 +9,7 @@ spec:
   storageClassName: mongo-storage 
   capacity: 
     storage: 5Gi 
-  accessMode: 
+  accessModes: 
     - ReadWriteOnce 
   persistentVolumeReclaimPolicy: Retain 
   hostPath: 
