@@ -1,14 +1,21 @@
 services:
   backend:
     container_name: govtip
-    image: arpanel/govtip:v1.1.0
+    build:
+      context: ./integration-plateform
     restart: on-failure
     ports:
       - "8080:8080"
+    environment:
+      SYSTEM_B_URL: http://system-b:8082
+      SYSTEM_C_URL: http://system-c:8083
+      MONGODB_URI: mongodb://mongo:27017/integration-system
     networks:
       - monitoring
     depends_on:
       - mongo
+      - system-b
+      - system-c
 
   frontend:
     build:
@@ -20,6 +27,30 @@ services:
       API_PROXY_TARGET: http://backend:8080
     depends_on:
       - backend
+    networks:
+      - monitoring
+
+  system-b:
+    build:
+      context: ./system-b
+    container_name: system-b
+    restart: on-failure
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://mongo:27017/systemB
+    depends_on:
+      - mongo
+    networks:
+      - monitoring
+
+  system-c:
+    build:
+      context: ./system-c
+    container_name: system-c
+    restart: on-failure
+    ports:
+      - "8083:8083"
     networks:
       - monitoring
 
@@ -42,12 +73,13 @@ services:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
     command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/prometheus'
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+    depends_on:
+      - backend
     networks:
       - monitoring
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+
   grafana:
     container_name: grafana
     image: grafana/grafana-oss:latest
@@ -57,13 +89,15 @@ services:
     volumes:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+    depends_on:
+      - prometheus
     networks:
       - monitoring
+
 networks:
-    monitoring:
-      driver: bridge
+  monitoring:
+    driver: bridge
+
 volumes:
   grafana_data:
   prometheus_data:
-
-
