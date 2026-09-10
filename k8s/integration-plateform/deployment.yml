@@ -28,6 +28,12 @@ spec:
             capabilities:
               drop:
                 - ALL
+          env: 
+            - name: SPRING_DATA_MONGO_URI
+              valueFrom: 
+                secretKeyRef: 
+                  name: secret
+                  key: mongo-uri 
           resources:
             requests:
                 memory: "256Mi"
