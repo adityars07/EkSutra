@@ -9,7 +9,7 @@ services:
     environment:
       SYSTEM_B_URL: http://system-b:8082
       SYSTEM_C_URL: http://system-c:8083
-      MONGODB_URI: mongodb://mongo:27017/integration-system
+      SPRING_DATA_MONGODB_URI: mongodb://mongo:27017/integration-system
     networks:
       - monitoring
     depends_on:
