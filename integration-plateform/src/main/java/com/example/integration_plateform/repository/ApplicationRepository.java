@@ -23,4 +23,6 @@ public interface ApplicationRepository extends MongoRepository<ApplicationRecord
 }
 """)
     List<ApplicationRecord> searchApplication(String query);
+
+
 }

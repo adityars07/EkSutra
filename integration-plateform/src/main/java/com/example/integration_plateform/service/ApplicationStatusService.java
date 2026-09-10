@@ -3,7 +3,6 @@ package com.example.integration_plateform.service;
 import com.example.integration_plateform.model.ApplicationRecord;
 import com.example.integration_plateform.model.ApplicationStatus;
 import com.example.integration_plateform.model.StatusHistory;
-import com.example.integration_plateform.repository.ApplicationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +14,7 @@ import java.util.ArrayList;
 @Service
 @RequiredArgsConstructor
 public class ApplicationStatusService {
+
     private final ApplicationPersistenceService applicationPersistenceService;
 
     private String getCurrentUsername() {
@@ -23,6 +23,10 @@ public class ApplicationStatusService {
                 SecurityContextHolder
                         .getContext()
                         .getAuthentication();
+
+        if (authentication == null) {
+            return "SYSTEM";
+        }
 
         return authentication.getName();
     }
@@ -54,13 +58,13 @@ public class ApplicationStatusService {
             record.setStatusHistory(new ArrayList<>());
         }
 
-        StatusHistory history = StatusHistory.builder()
-                .status(newStatus)
-                .reason(reason)
-                .changedBy(getCurrentUsername())
-                .changedAt(LocalDateTime.now())
-                .build();
-
+        StatusHistory history =
+                StatusHistory.builder()
+                        .status(newStatus)
+                        .reason(reason)
+                        .changedBy(getCurrentUsername())
+                        .changedAt(LocalDateTime.now())
+                        .build();
 
         record.getStatusHistory().add(history);
 
@@ -72,8 +76,11 @@ public class ApplicationStatusService {
             ApplicationStatus oldStatus,
             ApplicationStatus newStatus
     ) {
-        if (newStatus == oldStatus) {
-            return;
+
+        if (oldStatus == newStatus) {
+            throw new IllegalStateException(
+                    "Application is already in status: " + newStatus
+            );
         }
 
         switch (oldStatus) {
@@ -92,27 +99,35 @@ public class ApplicationStatusService {
         }
     }
 
-    private void validateFromEligibilityVerified(ApplicationStatus newStatus){
-        if(newStatus!=ApplicationStatus.ON_HOLD &&  newStatus!=ApplicationStatus.APPROVED){
-            throw new IllegalStateException(
-                    "Invalid transistion from " + ApplicationStatus.ELIGIBILITY_VERIFIED + " to " +newStatus
-            );
-        }
-    }
-    private void validateFromOnHold(
-            ApplicationStatus newStatus) {
+    private void validateFromEligibilityVerified(
+            ApplicationStatus newStatus
+    ) {
 
-        if (newStatus != ApplicationStatus.APPROVED &&
-                newStatus != ApplicationStatus.REJECTED) {
+        if (newStatus != ApplicationStatus.ON_HOLD &&
+                newStatus != ApplicationStatus.APPROVED) {
 
             throw new IllegalStateException(
-                    "Invalid status transition from "
-                            + ApplicationStatus.ON_HOLD
+                    "Invalid transition from "
+                            + ApplicationStatus.ELIGIBILITY_VERIFIED
                             + " to "
                             + newStatus
             );
         }
     }
 
+    private void validateFromOnHold(
+            ApplicationStatus newStatus
+    ) {
 
+        if (newStatus != ApplicationStatus.APPROVED &&
+                newStatus != ApplicationStatus.REJECTED) {
+
+            throw new IllegalStateException(
+                    "Invalid transition from "
+                            + ApplicationStatus.ON_HOLD
+                            + " to "
+                            + newStatus
+            );
+        }
+    }
 }

@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ApplicationActionRequestDto {
 
-    @NotNull
+    @NotNull(message = "Action is required")
     private ActionType action;
 
-    @NotBlank
+    @NotBlank(message = "Reason is required")
     private String reason;
 }

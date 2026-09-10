@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReviewActionRequest {
 
-    @NotNull
+    @NotNull(message = "Decision is required")
     private RequestStatus decision;
 
-    @NotBlank
+    @NotBlank(message = "Review comment is required")
     private String comment;
 }

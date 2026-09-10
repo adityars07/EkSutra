@@ -10,5 +10,9 @@ public interface ApplicationActionRequestRepository  extends MongoRepository<App
 
     List<ApplicationActionRequest> findByApplicationId(String applicationId);
     List<ApplicationActionRequest> findByStatus(RequestStatus status );
-    List<ApplicationActionRequest> findByIdAndStatus(RequestStatus status, String applicationId);
+    List<ApplicationActionRequest> findByApplicationIdAndStatus(
+            String applicationId,
+            RequestStatus status
+    );
+
 }

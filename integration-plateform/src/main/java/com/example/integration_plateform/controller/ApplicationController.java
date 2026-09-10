@@ -33,6 +33,7 @@ public class ApplicationController {
 
     @GetMapping
     List<ApplicationRecord> getApplication(){
+
         return applicationPersistenceService.getApplications();
     }
 
@@ -45,6 +46,7 @@ public class ApplicationController {
             value = "/{applicationId}/status",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<ApplicationRecord> updateApplicationStatus(
             @PathVariable String applicationId,
             @Valid @RequestBody UpdateApplicationStatusRequest request
@@ -60,8 +62,8 @@ public class ApplicationController {
     }
 
     @GetMapping("/search")
-    public List<ApplicationRecord> getBySearch(@RequestParam String qurey){
-        return applicationPersistenceService.searchApplication(qurey);
+    public List<ApplicationRecord> getBySearch(@RequestParam String query){
+        return applicationPersistenceService.searchApplication(query);
     }
 
     @PostMapping(

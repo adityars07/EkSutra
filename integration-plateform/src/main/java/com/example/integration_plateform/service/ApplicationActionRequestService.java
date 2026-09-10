@@ -32,13 +32,41 @@ public class ApplicationActionRequestService {
                                 )
                         );
 
-        if (application.getApplicationStatus()
-                == ApplicationStatus.APPROVED ||
-                application.getApplicationStatus()
-                        == ApplicationStatus.REJECTED) {
+        ApplicationStatus currentStatus =
+                application.getApplicationStatus();
+
+        if (currentStatus == ApplicationStatus.APPROVED ||
+                currentStatus == ApplicationStatus.REJECTED) {
 
             throw new IllegalStateException(
-                    "Application is already in final state"
+                    "Application is already in final state: "
+                            + currentStatus
+            );
+        }
+
+        /*
+         * Validate whether the requested action is allowed
+         * for the current application status.
+         */
+        validateAction(currentStatus, request);
+
+        /*
+         * Prevent multiple pending requests for the
+         * same application.
+         */
+        boolean pendingRequestExists =
+                !requestRepository
+                        .findByApplicationIdAndStatus(
+                                applicationId,
+                                RequestStatus.PENDING
+                        )
+                        .isEmpty();
+
+        if (pendingRequestExists) {
+
+            throw new IllegalStateException(
+                    "A pending action request already exists "
+                            + "for this application"
             );
         }
 
@@ -58,5 +86,52 @@ public class ApplicationActionRequestService {
                         .build();
 
         return requestRepository.save(actionRequest);
+    }
+
+    private void validateAction(
+            ApplicationStatus currentStatus,
+            ApplicationActionRequestDto request
+    ) {
+
+        switch (currentStatus) {
+
+            case ELIGIBILITY_VERIFIED -> {
+
+                if (request.getAction()
+                        != com.example.integration_plateform.model.ActionType.APPROVE
+                        &&
+                        request.getAction()
+                                != com.example.integration_plateform.model.ActionType.ON_HOLD) {
+
+                    throw new IllegalStateException(
+                            "From ELIGIBILITY_VERIFIED, "
+                                    + "only APPROVE or ON_HOLD "
+                                    + "actions are allowed"
+                    );
+                }
+            }
+
+            case ON_HOLD -> {
+
+                if (request.getAction()
+                        != com.example.integration_plateform.model.ActionType.APPROVE
+                        &&
+                        request.getAction()
+                                != com.example.integration_plateform.model.ActionType.REJECT) {
+
+                    throw new IllegalStateException(
+                            "From ON_HOLD, only APPROVE or REJECT "
+                                    + "actions are allowed"
+                    );
+                }
+            }
+
+            case APPROVED, REJECTED -> {
+
+                throw new IllegalStateException(
+                        "Application is already in final state"
+                );
+            }
+        }
     }
 }
