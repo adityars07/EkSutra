@@ -98,6 +98,7 @@ export const Navbar = ({ currentTheme, onToggleTheme, onNavigate, activePage }) 
             <button 
               className="btn btn-secondary btn-sm"
               onClick={() => onNavigate('citizen')}
+              style={{ background: 'rgba(255,255,255,0.12)', color: '#FFFFFF', borderColor: 'rgba(255,255,255,0.25)' }}
             >
               <ExternalLink size={14} />
               <span>Citizen View</span>
@@ -106,18 +107,32 @@ export const Navbar = ({ currentTheme, onToggleTheme, onNavigate, activePage }) 
 
           {/* Quick Role Switcher for Officer Portal */}
           {user && activePage !== 'citizen' && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'rgba(255,255,255,0.1)', padding: '4px 8px', borderRadius: 8 }}>
-              <span style={{ fontSize: '0.74rem', color: '#94A3B8' }}>Role:</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'rgba(0,0,0,0.3)', padding: '4px 8px', borderRadius: 4, border: '1px solid rgba(184,147,74,0.3)' }}>
+              <span style={{ fontSize: '0.74rem', color: '#DDD8CA', fontWeight: 600 }}>Role:</span>
               <button
-                className={`btn btn-sm ${user.role === 'AUTHORITY' ? 'btn-primary' : 'btn-outline'}`}
-                style={{ padding: '2px 8px', fontSize: '0.72rem' }}
+                className="btn btn-sm"
+                style={{
+                  padding: '3px 10px',
+                  fontSize: '0.74rem',
+                  color: user.role === 'AUTHORITY' ? '#1A1916' : '#F6F3EC',
+                  borderColor: user.role === 'AUTHORITY' ? 'transparent' : 'rgba(246,243,236,0.3)',
+                  background: user.role === 'AUTHORITY' ? 'var(--gold-500)' : 'transparent',
+                  fontWeight: 700
+                }}
                 onClick={() => switchRole('AUTHORITY')}
               >
                 Authority
               </button>
               <button
-                className={`btn btn-sm ${user.role === 'ADMIN' ? 'btn-primary' : 'btn-outline'}`}
-                style={{ padding: '2px 8px', fontSize: '0.72rem' }}
+                className="btn btn-sm"
+                style={{
+                  padding: '3px 10px',
+                  fontSize: '0.74rem',
+                  color: user.role === 'ADMIN' ? '#1A1916' : '#F6F3EC',
+                  borderColor: user.role === 'ADMIN' ? 'transparent' : 'rgba(246,243,236,0.3)',
+                  background: user.role === 'ADMIN' ? 'var(--gold-500)' : 'transparent',
+                  fontWeight: 700
+                }}
                 onClick={() => switchRole('ADMIN')}
               >
                 Admin
@@ -127,16 +142,16 @@ export const Navbar = ({ currentTheme, onToggleTheme, onNavigate, activePage }) 
 
           {/* User Profile Badge */}
           {user ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <div style={{ textAlign: 'right', display: 'none', md: 'block' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <div style={{ textAlign: 'right' }}>
                 <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#FFFFFF' }}>{user.name}</div>
-                <div style={{ fontSize: '0.7rem', color: '#94A3B8' }}>{user.role}</div>
+                <div style={{ fontSize: '0.7rem', color: '#94A3B8', fontWeight: 500 }}>{user.role}</div>
               </div>
               <button 
                 className="btn btn-outline btn-icon-only btn-sm"
                 onClick={logout}
                 title="Logout"
-                style={{ color: '#E2E8F0', borderColor: 'rgba(255,255,255,0.2)' }}
+                style={{ color: '#FFFFFF', borderColor: 'rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.08)' }}
               >
                 <LogOut size={14} />
               </button>

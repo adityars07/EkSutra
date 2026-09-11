@@ -243,7 +243,7 @@ export const IntegrationStudioPage = ({ onNavigateToApplications }) => {
         <div className="pipeline-canvas">
           {/* Node 1: Ingestion */}
           <div className={`pipeline-node ${executionState.currentStep >= 1 ? (executionState.currentStep === 1 ? 'status-active' : 'status-success') : 'status-idle'}`}>
-            <div className="node-icon-circle" style={{ '--node-bg': 'var(--primary-50)', '--node-color': 'var(--primary-600)' }}>
+            <div className="node-icon-circle" style={{ '--node-bg': 'var(--forest-50)', '--node-color': 'var(--forest-800)' }}>
               <Send size={20} />
             </div>
             <div className="node-title">System A</div>
@@ -257,7 +257,7 @@ export const IntegrationStudioPage = ({ onNavigateToApplications }) => {
 
           {/* Node 2: Canonical Normalizer */}
           <div className={`pipeline-node ${executionState.currentStep >= 2 ? (executionState.currentStep === 2 ? 'status-active' : 'status-success') : 'status-idle'}`}>
-            <div className="node-icon-circle" style={{ '--node-bg': 'var(--cyan-light)', '--node-color': 'var(--cyan-600)' }}>
+            <div className="node-icon-circle" style={{ '--node-bg': 'var(--gold-100)', '--node-color': 'var(--gold-800)' }}>
               <Layers size={20} />
             </div>
             <div className="node-title">Canonical Bridge</div>
@@ -273,7 +273,7 @@ export const IntegrationStudioPage = ({ onNavigateToApplications }) => {
           <div className="parallel-branch-container">
             {/* System B */}
             <div className={`pipeline-node ${executionState.currentStep >= 3 ? (executionState.currentStep === 3 ? 'status-active' : (executionState.systemBResponse?.eligible ? 'status-success' : 'status-error')) : 'status-idle'}`} style={{ width: 180 }}>
-              <div className="node-icon-circle" style={{ '--node-bg': 'var(--emerald-light)', '--node-color': 'var(--emerald-600)' }}>
+              <div className="node-icon-circle" style={{ '--node-bg': 'var(--forest-50)', '--node-color': 'var(--forest-800)' }}>
                 <Server size={18} />
               </div>
               <div className="node-title">System B (REST)</div>
@@ -285,7 +285,7 @@ export const IntegrationStudioPage = ({ onNavigateToApplications }) => {
 
             {/* System C */}
             <div className={`pipeline-node ${executionState.currentStep >= 3 ? (executionState.currentStep === 3 ? 'status-active' : (executionState.systemCResponse?.eligible ? 'status-success' : 'status-error')) : 'status-idle'}`} style={{ width: 180 }}>
-              <div className="node-icon-circle" style={{ '--node-bg': 'var(--amber-light)', '--node-color': 'var(--amber-600)' }}>
+              <div className="node-icon-circle" style={{ '--node-bg': 'var(--gold-100)', '--node-color': 'var(--gold-800)' }}>
                 <FileJson size={18} />
               </div>
               <div className="node-title">System C (XML)</div>
@@ -300,7 +300,7 @@ export const IntegrationStudioPage = ({ onNavigateToApplications }) => {
 
           {/* Node 4: Rule Aggregation */}
           <div className={`pipeline-node ${executionState.currentStep >= 4 ? (executionState.currentStep === 4 ? 'status-active' : 'status-success') : 'status-idle'}`}>
-            <div className="node-icon-circle" style={{ '--node-bg': 'var(--primary-50)', '--node-color': 'var(--primary-600)' }}>
+            <div className="node-icon-circle" style={{ '--node-bg': 'var(--forest-50)', '--node-color': 'var(--forest-800)' }}>
               <Cpu size={20} />
             </div>
             <div className="node-title">Decision Engine</div>
@@ -314,7 +314,7 @@ export const IntegrationStudioPage = ({ onNavigateToApplications }) => {
 
           {/* Node 5: Master Persistence */}
           <div className={`pipeline-node ${executionState.currentStep >= 5 ? 'status-success' : 'status-idle'}`}>
-            <div className="node-icon-circle" style={{ '--node-bg': 'var(--emerald-light)', '--node-color': 'var(--emerald-600)' }}>
+            <div className="node-icon-circle" style={{ '--node-bg': 'var(--forest-50)', '--node-color': 'var(--forest-800)' }}>
               <Database size={20} />
             </div>
             <div className="node-title">MongoDB Master</div>

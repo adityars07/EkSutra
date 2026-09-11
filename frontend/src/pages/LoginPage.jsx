@@ -44,13 +44,13 @@ export const LoginPage = ({ onLoginSuccess, onNavigateToCitizen }) => {
     <div className="auth-wrapper">
       <div className="auth-card">
         {/* Logo and Title */}
-        <div style={{ textAlign: 'center', marginBottom: 24 }}>
-          <div style={{ display: 'inline-flex', marginBottom: 12 }}>
-            <img src="/logo.svg" alt="EkSutra" style={{ width: 56, height: 56 }} />
+        <div style={{ textAlign: 'center', marginBottom: 28 }}>
+          <div style={{ display: 'inline-flex', marginBottom: 14, padding: 10, background: 'var(--bg-subtle)', borderRadius: 12, border: '1px solid var(--border-subtle)' }}>
+            <img src="/logo.svg" alt="EkSutra" style={{ width: 52, height: 52 }} />
           </div>
-          <h2 style={{ fontSize: '1.4rem', marginBottom: 4 }}>EkSutra Officer Portal</h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>
-            Government of Maharashtra Interoperability Gateway
+          <h2 style={{ fontSize: '1.45rem', marginBottom: 6 }}>EkSutra Officer Portal</h2>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.84rem' }}>
+            Government of Maharashtra &bull; Executive Interoperability Gateway
           </p>
         </div>
 
@@ -92,28 +92,28 @@ export const LoginPage = ({ onLoginSuccess, onNavigateToCitizen }) => {
             style={{ width: '100%', marginTop: 8 }}
             disabled={loading}
           >
-            <ShieldCheck size={16} />
+            <ShieldCheck size={18} />
             <span>{loading ? 'Authenticating...' : 'Sign In to Portal'}</span>
           </button>
         </form>
 
         {/* Quick Demo Login Preset Buttons */}
-        <div style={{ marginTop: 24 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.76rem', color: 'var(--text-muted)', marginBottom: 8, justifyContent: 'center' }}>
-            <Sparkles size={14} color="var(--saffron-500)" />
+        <div style={{ marginTop: 28 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.78rem', color: 'var(--text-muted)', marginBottom: 10, justifyContent: 'center', fontWeight: 600 }}>
+            <Sparkles size={14} color="var(--gold-500)" />
             <span>1-Click Evaluator & Demo Access:</span>
           </div>
           <div className="auth-demo-grid">
             <button
               type="button"
-              className="btn btn-outline btn-sm"
+              className="btn btn-secondary btn-sm"
               onClick={() => handleQuickDemo('AUTHORITY')}
             >
               Authority Officer
             </button>
             <button
               type="button"
-              className="btn btn-outline btn-sm"
+              className="btn btn-secondary btn-sm"
               onClick={() => handleQuickDemo('ADMIN')}
             >
               Apex Admin (MSInS)
@@ -121,7 +121,7 @@ export const LoginPage = ({ onLoginSuccess, onNavigateToCitizen }) => {
           </div>
         </div>
 
-        <div style={{ textAlign: 'center', marginTop: 20, paddingTop: 16, borderTop: '1px solid var(--border-subtle)' }}>
+        <div style={{ textAlign: 'center', marginTop: 24, paddingTop: 18, borderTop: '1px solid var(--border-subtle)' }}>
           <button
             type="button"
             className="btn btn-outline btn-sm"

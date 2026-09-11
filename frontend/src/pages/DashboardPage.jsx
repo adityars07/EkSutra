@@ -91,8 +91,8 @@ export const DashboardPage = ({ onNavigate }) => {
           icon={FileText}
           trend="+4.8% this week"
           trendType="positive"
-          accentColor="var(--primary-600)"
-          bgColor="var(--primary-50)"
+          accentColor="var(--forest-800)"
+          bgColor="var(--forest-50)"
         />
         <StatCard
           title="Cross-System Verified"
@@ -100,8 +100,8 @@ export const DashboardPage = ({ onNavigate }) => {
           icon={CheckCircle2}
           trend="Automated 2-way match"
           trendType="positive"
-          accentColor="var(--emerald-600)"
-          bgColor="var(--emerald-light)"
+          accentColor="var(--forest-700)"
+          bgColor="var(--forest-50)"
         />
         <StatCard
           title="Under Review / On Hold"
@@ -109,8 +109,8 @@ export const DashboardPage = ({ onNavigate }) => {
           icon={Clock}
           trend="Requires officer action"
           trendType="neutral"
-          accentColor="var(--amber-600)"
-          bgColor="var(--amber-light)"
+          accentColor="var(--gold-600)"
+          bgColor="var(--gold-100)"
         />
         <StatCard
           title="Final Approved Sanctions"
@@ -118,8 +118,8 @@ export const DashboardPage = ({ onNavigate }) => {
           icon={CheckCircle}
           trend="Disbursal ready"
           trendType="positive"
-          accentColor="var(--emerald-600)"
-          bgColor="var(--emerald-light)"
+          accentColor="var(--forest-700)"
+          bgColor="var(--forest-50)"
         />
         <StatCard
           title="SLA Compliance Rate"
@@ -127,8 +127,8 @@ export const DashboardPage = ({ onNavigate }) => {
           icon={Activity}
           trend="Target: >98.0%"
           trendType="positive"
-          accentColor="var(--cyan-600)"
-          bgColor="var(--cyan-light)"
+          accentColor="var(--gold-500)"
+          bgColor="var(--gold-100)"
         />
       </div>
 
@@ -145,10 +145,10 @@ export const DashboardPage = ({ onNavigate }) => {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
             {[
-              { name: 'Maharashtra State Innovation Society (MSInS)', count: 42, pct: 85, color: 'var(--primary-500)' },
-              { name: 'Directorate of Vocational Education & Skills', count: 38, pct: 76, color: 'var(--emerald-500)' },
-              { name: 'Chief Minister Employment Exchange (CMEGP)', count: 29, pct: 58, color: 'var(--amber-500)' },
-              { name: 'Agriculture & Solar Feeder Registry', count: 18, pct: 36, color: 'var(--cyan-500)' }
+              { name: 'Maharashtra State Innovation Society (MSInS)', count: 42, pct: 85, color: 'var(--forest-800)' },
+              { name: 'Directorate of Vocational Education & Skills', count: 38, pct: 76, color: 'var(--forest-600)' },
+              { name: 'Chief Minister Employment Exchange (CMEGP)', count: 29, pct: 58, color: 'var(--gold-500)' },
+              { name: 'Agriculture & Solar Feeder Registry', count: 18, pct: 36, color: 'var(--terracotta-500)' }
             ].map((dept, idx) => (
               <div key={idx}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem', marginBottom: 6 }}>
@@ -164,7 +164,7 @@ export const DashboardPage = ({ onNavigate }) => {
         </div>
 
         {/* Integration Architecture Quick Visual Card */}
-        <div className="card" style={{ background: 'linear-gradient(135deg, var(--bg-surface) 0%, var(--bg-subtle) 100%)' }}>
+        <div className="card">
           <div className="card-header">
             <div>
               <div className="card-title">Interoperability Middleware Flow</div>
@@ -175,9 +175,9 @@ export const DashboardPage = ({ onNavigate }) => {
             </button>
           </div>
 
-          <div style={{ padding: 12, background: 'var(--bg-surface)', border: '1px solid var(--border-subtle)', borderRadius: 8, fontSize: '0.8rem', lineHeight: 1.6 }}>
+          <div style={{ padding: 14, background: 'var(--bg-subtle)', border: '1px solid var(--border-subtle)', borderRadius: 6, fontSize: '0.82rem', lineHeight: 1.6 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8, color: 'var(--text-primary)', fontWeight: 600 }}>
-              <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--emerald-500)' }}></span>
+              <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--forest-700)' }}></span>
               <span>System A (Intake) &rarr; Canonical Transformer &rarr; Multi-Registry Validation</span>
             </div>
             <p style={{ color: 'var(--text-muted)' }}>
