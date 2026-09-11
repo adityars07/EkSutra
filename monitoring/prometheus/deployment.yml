@@ -45,17 +45,17 @@ spec:
             - --storage.tsdb.retention.time=15d
             - --web.enable-lifecycle
 
-      volumeMounts: 
-            - mountPath: /prometheus
-              name: prometheus-volume 
-            - name: prometheus-config 
-              mountPath: /etc/prometheus/prometheus.yml
-              subPath: prometheus.yml 
-              readOnly: true
-  volumes: 
-    - name: prometheus-volume
-      persistentVolumeClaim: 
-        claimName: prometheus-pvc 
-    - name: prometheus-config
-      configMap: 
-        name: prometheus-configmap 
+          volumeMounts: 
+              - mountPath: /prometheus
+                name: prometheus-volume 
+              - name: prometheus-config 
+                mountPath: /etc/prometheus/prometheus.yml
+                subPath: prometheus.yml 
+                readOnly: true
+    volumes: 
+      - name: prometheus-volume
+        persistentVolumeClaim: 
+          claimName: prometheus-pvc 
+      - name: prometheus-config
+        configMap: 
+          name: prometheus-configmap 

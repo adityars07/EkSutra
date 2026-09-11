@@ -1,0 +1,72 @@
+kind: Deployment 
+apiVersion: apps/v1 
+metadata: 
+  name: grafana 
+  namespace: monitoring 
+spec: 
+  replicas: 1 
+  selector: 
+    matchLabels: 
+      app: grafana 
+  template: 
+    metadata: 
+      labels: 
+        app: grafana 
+    spec: 
+     automountServiceAccountToken: false
+     terminationGracePeriodSeconds: 30s 
+     securityContext: 
+      runAsGroup: 472 
+      runAsUser: 472 
+      runAsNonRoot: true 
+      fsGroup: 472 
+      initContainers: 
+        - name: fix-permissions 
+          image: busybox:latest 
+          command: ["sh", "-c", "chown -R 472:472 /var/lib/grafana"]
+          securityContext:
+            runAsUser: 0 
+            runAsNonRoot: false
+          volumeMounts:
+            - name: grafana-storage 
+              mountPath: /var/lib/grafana
+      containers: 
+      - name: grafana 
+        image: grafana/grafana:12.1.0 
+        imagePullPolicy: IfNotPresent 
+        ports: 
+          - containerPort: 3000 
+        securityContext: 
+          allowPrivilegeEscalation: false 
+          readOnlyRootFilesystem: false 
+          capabilities: 
+            drop: 
+              - ALL 
+        env: 
+          - name: GF_SECURITY_ADMIN_USER
+            valueFrom: 
+              configMapKeyRef: 
+                name: grafana-configmap 
+                key: username 
+          - name: GF_SECURITY_ADMIN_PASSWORD 
+            valueFrom: 
+              secretKeyRef: 
+                name: grafana-secret 
+                key: password 
+        volumeMounts: 
+            - name: grafana-storage 
+              mountPath: /var/lib/grafana
+        resources:
+          requests: 
+            cpu: 100m 
+            memory: 128Mi 
+          limits: 
+            cpu: 200m 
+            memory: 256Mi 
+      volumes: 
+          - name: grafana-storage 
+            persistentVolumeClaim: 
+              claimName: grafana-pvc  
+
+            
+        
