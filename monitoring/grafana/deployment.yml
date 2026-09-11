@@ -13,13 +13,13 @@ spec:
       labels: 
         app: grafana 
     spec: 
-     automountServiceAccountToken: false
-     terminationGracePeriodSeconds: 30s 
-     securityContext: 
-      runAsGroup: 472 
-      runAsUser: 472 
-      runAsNonRoot: true 
-      fsGroup: 472 
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 30 
+      securityContext: 
+        runAsGroup: 472 
+        runAsUser: 472 
+        runAsNonRoot: true 
+        fsGroup: 472 
       initContainers: 
         - name: fix-permissions 
           image: busybox:latest 
@@ -31,42 +31,39 @@ spec:
             - name: grafana-storage 
               mountPath: /var/lib/grafana
       containers: 
-      - name: grafana 
-        image: grafana/grafana:12.1.0 
-        imagePullPolicy: IfNotPresent 
-        ports: 
-          - containerPort: 3000 
-        securityContext: 
-          allowPrivilegeEscalation: false 
-          readOnlyRootFilesystem: false 
-          capabilities: 
-            drop: 
-              - ALL 
-        env: 
-          - name: GF_SECURITY_ADMIN_USER
-            valueFrom: 
-              configMapKeyRef: 
-                name: grafana-configmap 
-                key: username 
-          - name: GF_SECURITY_ADMIN_PASSWORD 
-            valueFrom: 
-              secretKeyRef: 
-                name: grafana-secret 
-                key: password 
-        volumeMounts: 
+        - name: grafana 
+          image: grafana/grafana:12.1.0 
+          imagePullPolicy: IfNotPresent 
+          ports: 
+            - containerPort: 3000 
+          securityContext: 
+            allowPrivilegeEscalation: false 
+            readOnlyRootFilesystem: false 
+            capabilities: 
+              drop: 
+                - ALL 
+          env: 
+            - name: GF_SECURITY_ADMIN_USER
+              valueFrom: 
+                configMapKeyRef: 
+                  name: grafana-configmap 
+                  key: username 
+            - name: GF_SECURITY_ADMIN_PASSWORD 
+              valueFrom: 
+                secretKeyRef: 
+                  name: grafana-secret 
+                  key: password 
+          volumeMounts: 
             - name: grafana-storage 
               mountPath: /var/lib/grafana
-        resources:
-          requests: 
-            cpu: 100m 
-            memory: 128Mi 
-          limits: 
-            cpu: 200m 
-            memory: 256Mi 
+          resources:
+            requests: 
+              cpu: 100m 
+              memory: 128Mi 
+            limits: 
+              cpu: 200m 
+              memory: 256Mi 
       volumes: 
-          - name: grafana-storage 
-            persistentVolumeClaim: 
-              claimName: grafana-pvc  
-
-            
-        
+        - name: grafana-storage 
+          persistentVolumeClaim: 
+            claimName: grafana-pvc
