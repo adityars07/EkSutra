@@ -9,17 +9,29 @@
   border-radius: var(--radius-lg);
   padding: 24px;
   box-shadow: var(--shadow-sm);
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 220ms ease,
+              box-shadow 220ms ease;
   position: relative;
+  will-change: transform;
 }
 
 .card:hover {
+  transform: translateY(-2px);
   border-color: var(--border-medium);
+  box-shadow: var(--shadow-md);
 }
 
 .card-hover:hover {
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-lg);
   border-color: var(--border-highlight);
+}
+
+/* Selected Deep Forest Accent Panels (~25% dark palette weight) */
+.panel-forest {
+  background: var(--bg-forest-panel);
+  border: 1px solid rgba(184, 147, 74, 0.25);
+  color: #F6F3EC;
 }
 
 .card-header {
@@ -139,9 +151,7 @@
 [data-theme="dark"] .stat-trend.positive { color: #C5D8D2; }
 [data-theme="dark"] .stat-trend.negative { color: #E8A396; }
 
-/* ==========================================================================
-   Buttons (Sahyadri High Contrast & Precision Spacing)
-   ========================================================================== */
+/* Buttons (8-12px Corners, High Contrast, Micro-Interactions) */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -154,10 +164,15 @@
   border-radius: var(--radius-md);
   border: 1px solid transparent;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 200ms cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 200ms cubic-bezier(0.16, 1, 0.3, 1),
+              color 200ms cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
   text-decoration: none;
   line-height: 1.25;
+  will-change: transform;
 }
 
 .btn:disabled {
@@ -165,25 +180,42 @@
   cursor: not-allowed;
 }
 
+.btn:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.025);
+  box-shadow: var(--shadow-md);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+
+.btn svg, .btn .lucide {
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn:hover:not(:disabled) svg,
+.btn:hover:not(:disabled) .lucide {
+  transform: translateX(2px);
+}
+
 /* Primary Button - Sahyadri Deep Forest Green */
 .btn-primary {
   background: var(--forest-800);
   color: #F6F3EC;
   border-color: var(--forest-900);
-  box-shadow: 0 1px 3px rgba(27, 59, 50, 0.15);
+  box-shadow: 0 1px 3px rgba(12, 18, 16, 0.2);
 }
 
 .btn-primary:hover:not(:disabled) {
   background: var(--forest-700);
   color: #FFFFFF;
-  transform: translateY(-1px);
-  box-shadow: 0 3px 8px rgba(27, 59, 50, 0.25);
+  box-shadow: 0 4px 12px rgba(12, 18, 16, 0.35);
 }
 
-/* Antique Gold Button */
+/* Muted Antique Gold Button */
 .btn-saffron {
   background: var(--gold-500);
-  color: #1A1916;
+  color: #0C1210;
   border-color: var(--gold-600);
   box-shadow: 0 1px 3px rgba(184, 147, 74, 0.2);
 }
@@ -191,8 +223,7 @@
 .btn-saffron:hover:not(:disabled) {
   background: var(--gold-600);
   color: #FFFFFF;
-  transform: translateY(-1px);
-  box-shadow: 0 3px 8px rgba(184, 147, 74, 0.3);
+  box-shadow: 0 4px 12px rgba(184, 147, 74, 0.35);
 }
 
 /* Muted Forest Emerald Button */
@@ -205,7 +236,6 @@
 .btn-emerald:hover:not(:disabled) {
   background: var(--forest-600);
   color: #FFFFFF;
-  transform: translateY(-1px);
 }
 
 /* Secondary Neutral Button */
@@ -485,12 +515,12 @@
   vertical-align: middle;
 }
 
-.data-table tr:last-child td {
-  border-bottom: none;
+.data-table tbody tr {
+  transition: background-color 180ms ease, border-color 180ms ease;
 }
 
 .data-table tbody tr:hover {
-  background-color: var(--bg-subtle);
+  background-color: var(--bg-hover);
 }
 
 /* ==========================================================================
@@ -562,6 +592,11 @@
   transition: width var(--transition-normal);
 }
 
+[data-theme="dark"] .admin-sidebar {
+  background: var(--bg-surface);
+  border-right-color: var(--border-subtle);
+}
+
 .sidebar-nav {
   padding: 20px 14px;
   display: flex;
@@ -580,20 +615,30 @@
   font-weight: 600;
   color: var(--text-secondary);
   text-decoration: none;
-  transition: all var(--transition-fast);
+  transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 180ms ease,
+              color 180ms ease,
+              border-color 180ms ease;
   border-left: 3px solid transparent;
 }
 
 .sidebar-link:hover {
   background: var(--bg-subtle);
   color: var(--text-primary);
+  transform: translateX(3px);
 }
 
 .sidebar-link.active {
-  background: var(--forest-50);
-  color: var(--forest-800);
-  border-left-color: var(--forest-800);
+  background: var(--bg-subtle);
+  color: var(--text-primary);
+  border-left-color: var(--gold-500);
   font-weight: 700;
+}
+
+[data-theme="dark"] .sidebar-link.active {
+  background: var(--bg-subtle);
+  color: #F6F3EC;
+  border-left-color: var(--gold-500);
 }
 
 [data-theme="dark"] .sidebar-link.active {

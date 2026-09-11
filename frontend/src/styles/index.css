@@ -82,30 +82,35 @@
   --shadow-lg: 0 12px 24px -3px rgba(27, 59, 50, 0.09), 0 4px 8px -4px rgba(27, 59, 50, 0.04);
 }
 
-/* Dark Theme (Executive Sahyadri Charcoal Console) */
+/* Dark Theme (Shifted to ~60% Charcoal/Black + ~25% Deep Forest Green + ~10% Warm Slate + ~5% Muted Gold) */
 [data-theme="dark"] {
-  --bg-main: #0C1814;
-  --bg-surface: #13241F;
-  --bg-surface-elevated: #1A302A;
-  --bg-surface-translucent: rgba(19, 36, 31, 0.94);
-  --bg-subtle: #11201B;
-  --bg-hover: #223B34;
+  --bg-main: #0B0E0D;                     /* Near-black charcoal main background (~60%) */
+  --bg-surface: #131715;                  /* Cards: sleek dark charcoal (NOT green!) */
+  --bg-surface-elevated: #1B211E;         /* Elevated surfaces/dropdowns */
+  --bg-surface-translucent: rgba(19, 23, 21, 0.95);
+  --bg-subtle: #1E2522;                  /* Warm dark slate/grey for subtle containers & headers (~10%) */
+  --bg-hover: #27302C;                   /* Interactive element hover background */
 
-  --border-subtle: #1E352E;
-  --border-medium: #2D4C43;
-  --border-highlight: #B8934A;
+  /* Deep Forest Green (~25%) reserved for nested panels, selected headers & key accent panels */
+  --bg-forest-panel: #162E27;
+  --bg-forest-elevated: #1F3B32;
+  --forest-accent: #1B3B32;
 
-  --text-primary: #F6F3EC;
-  --text-secondary: #C5C2B6;
-  --text-muted: #8E9490;
-  --text-inverse: #1F2623;
+  --border-subtle: #222B27;              /* Muted dark grey border */
+  --border-medium: #303D37;              /* Medium dark grey border */
+  --border-highlight: #B8934A;           /* Muted Antique Gold accent (~5%) */
 
-  --govt-header-bg: #08100D;
+  --text-primary: #F6F3EC;               /* Warm Ivory primary text */
+  --text-secondary: #ABB7B2;             /* Muted warm grey secondary text */
+  --text-muted: #798782;                  /* Muted slate secondary text */
+  --text-inverse: #0B0E0D;
+
+  --govt-header-bg: #122A22;              /* Header: deep forest green institutional accent */
   --govt-header-text: #F6F3EC;
 
-  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 14px 28px rgba(0, 0, 0, 0.6);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.6);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.7);
+  --shadow-lg: 0 14px 30px rgba(0, 0, 0, 0.8);
 }
 
 /* Base Reset */
