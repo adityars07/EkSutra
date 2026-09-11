@@ -22,6 +22,62 @@ function AppContent() {
     localStorage.setItem('eksutra_theme', theme);
   }, [theme]);
 
+  // Magnetic Button Effect Delegation (Respects prefers-reduced-motion)
+  useEffect(() => {
+    const handlePointerMove = (e) => {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const magneticBtns = document.querySelectorAll(
+        '.btn-primary, .btn-saffron, .btn-emerald, .btn-magnetic, [data-magnetic="true"]'
+      );
+
+      magneticBtns.forEach((btn) => {
+        if (btn.disabled) return;
+        const rect = btn.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        const dx = e.clientX - centerX;
+        const dy = e.clientY - centerY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        // Attraction threshold (button radius + ~35px)
+        const triggerRadius = Math.max(rect.width, rect.height) / 2 + 35;
+
+        if (dist < triggerRadius) {
+          const pull = (1 - dist / triggerRadius) * 5; // Max 5px pull
+          const moveX = (dx / dist) * pull;
+          const moveY = (dy / dist) * pull;
+
+          btn.style.transform = `translate3d(${moveX.toFixed(2)}px, ${moveY.toFixed(2)}px, 0) scale(1.025)`;
+          btn.style.transition = 'transform 180ms cubic-bezier(0.25, 1, 0.5, 1), box-shadow 180ms ease';
+        } else {
+          if (btn.style.transform && btn.style.transform.includes('translate3d')) {
+            btn.style.transform = '';
+            btn.style.transition = 'transform 300ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 300ms ease';
+          }
+        }
+      });
+    };
+
+    const handleMouseLeave = () => {
+      const magneticBtns = document.querySelectorAll(
+        '.btn-primary, .btn-saffron, .btn-emerald, .btn-magnetic, [data-magnetic="true"]'
+      );
+      magneticBtns.forEach((btn) => {
+        btn.style.transform = '';
+      });
+    };
+
+    window.addEventListener('pointermove', handlePointerMove, { passive: true });
+    document.addEventListener('mouseleave', handleMouseLeave, { passive: true });
+
+    return () => {
+      window.removeEventListener('pointermove', handlePointerMove);
+      document.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, []);
+
   const toggleTheme = () => {
     setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
   };
