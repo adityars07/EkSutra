@@ -8,7 +8,7 @@ spec:
   selector: 
     matchLabels: 
       app: prometheus 
-  templets: 
+  template: 
     metadata: 
       labels: 
         app: prometheus 
@@ -20,6 +20,16 @@ spec:
         runAsGroup: 65534 
         fsGroup: 65534
         runAsNonRoot: true 
+      initContainers:
+        - name: fix-permissions
+          image: busybox:latest
+          command: ["sh", "-c", "chown -R 65534:65534 /prometheus"]
+          securityContext:
+            runAsUser: 0
+            runAsNonRoot: false
+          volumeMounts:
+            - mountPath: /prometheus
+              name: prometheus-volume
       containers: 
         - name: prometheus
           image: prom/prometheus:v3.5.0
@@ -52,10 +62,10 @@ spec:
                 mountPath: /etc/prometheus/prometheus.yml
                 subPath: prometheus.yml 
                 readOnly: true
-    volumes: 
-      - name: prometheus-volume
-        persistentVolumeClaim: 
-          claimName: prometheus-pvc 
-      - name: prometheus-config
-        configMap: 
-          name: prometheus-configmap 
+      volumes: 
+        - name: prometheus-volume
+          persistentVolumeClaim: 
+            claimName: prometheus-pvc 
+        - name: prometheus-config
+          configMap: 
+            name: prometheus-configmap 

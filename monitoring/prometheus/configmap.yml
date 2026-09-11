@@ -12,11 +12,11 @@ data:
         static_configs: 
           - targets: 
               - localhost:9090 
-          labels: 
-            app: prometheus 
-      - job_name: 
+            labels: 
+              app: prometheus 
+      - job_name: integration-plateform 
         static_configs: 
-          - target: 
+          - targets: 
               - backend-service.govt-ip.svc.cluster.local:8080
             labels: 
               app: integration-plateform
