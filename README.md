@@ -380,15 +380,49 @@ EkSutra/
 
 ---
 
-## Mock Government Systems
+## Mock Government Systems & Citizen Portals
 
-To demonstrate real heterogeneous integration rather than a single mocked API, three intentionally different mock systems back the platform:
+To demonstrate real heterogeneous integration and citizen data sovereignty, the ecosystem includes:
 
-| System | Protocol | Format |
-|---|---|---|
-| **System A** | REST | JSON |
-| **System B** | REST | JSON |
-| **System C** | SOAP | XML |
+| System | Role | Tech Stack | Port | Description |
+|---|---|---|:---:|---|
+| **System A (Citizen Portal)** | Frontend | React + TypeScript + Vite | `5174` | Citizen-facing "Department of Citizen Services" portal for scheme filing and tracking |
+| **System A (Backend)** | Service | Spring Boot + MongoDB | `8081` | Handles citizen applications, consent evaluation, and routing to EK SUTRA |
+| **EK SUTRA (Dashboard)** | Frontend | React + Vite | `5173` | Administrative and Authority governance portal for sanctioning & audit review |
+| **EK SUTRA (Core Middleware)** | Platform | Spring Boot + MongoDB | `8080` | Protocol-agnostic integration middleware, canonical model & status engine |
+| **System B** | Upstream Dep. | Spring Boot + MongoDB | `8082` | Age, Income, and Registration Verification Service (REST/JSON) |
+| **System C** | Upstream Dep. | Spring Boot + SOAP/REST | `8083` | Direct Benefit Transfer & Scheme Quota Registry |
+
+### 🔐 The Consent-Based Architecture (Core Demo Flow)
+
+The integration pipeline strictly respects citizen consent under Digital Personal Data Protection principles:
+
+```
+                          Citizen Application
+                                  │
+                                  ▼
+                         [ System A Portal ]
+                          (Port 5174 / 8081)
+                                  │
+                       Is consentGiven == true?
+                                  │
+                ┌─────────────────┴─────────────────┐
+                ▼                                   ▼
+             [ YES ]                             [ NO ]
+                │                                   │
+      Route to EK SUTRA (:8080)             Stay Local to System A
+                │                                   │
+        ┌───────┴───────┐                           │
+        ▼               ▼                           ▼
+    System B        System C              Status: RECEIVED
+   (Port 8082)     (Port 8083)            Cross-System: NOT INITIATED
+        │               │                 (No external data shared)
+        └───────┬───────┘
+                ▼
+    Status: ELIGIBILITY_VERIFIED
+    Cross-System: COMPLETED
+```
+
 
 ---
 
