@@ -1,0 +1,20 @@
+kind: AppProject
+apiVersion: argoproj.io/v1alpha1
+metadata: 
+  name: govt-ip-project
+  namespace: argocd 
+spec: 
+  description: "This is the project for Govt integration plateform"
+  sourceRepos: 
+    - https://github.com/arpanelfranklin/EkSutra.git
+  destinations: 
+    - namespace: govt-ip
+      server: https://kubernetes.default.svc
+    - namespace: argocd 
+      server: https://kubernetes.default.svc
+  clusterResourceWhiteList: 
+    - group: "*"
+      kind: "*"
+  namespaceResourceWhitelist: 
+    - group: "*"
+      kind: "*"
