@@ -35,25 +35,20 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     private void seedUsers() {
-        createUserIfNotExists("admin", "password123", Role.ADMIN);
-        createUserIfNotExists("msins_admin", "demo123", Role.ADMIN);
-        createUserIfNotExists("msins_admin", "password123", Role.ADMIN);
-        createUserIfNotExists("aditya_authority", "password123", Role.AUTHORITY);
-        createUserIfNotExists("aditya_authority", "demo123", Role.AUTHORITY);
-        createUserIfNotExists("authority1", "password123", Role.AUTHORITY);
+        createOrUpdateUser("admin", "password123", Role.ADMIN);
+        createOrUpdateUser("msins_admin", "password123", Role.ADMIN);
+        createOrUpdateUser("aditya_authority", "password123", Role.AUTHORITY);
+        createOrUpdateUser("authority1", "password123", Role.AUTHORITY);
     }
 
-    private void createUserIfNotExists(String username, String rawPassword, Role role) {
-        if (!userRepository.existsByUsername(username)) {
-            User user = User.builder()
-                    .username(username)
-                    .password(passwordEncoder.encode(rawPassword))
-                    .role(role)
-                    .enabled(true)
-                    .build();
-            userRepository.save(user);
-            log.info("Initialized default account: {} with role: {}", username, role);
-        }
+    private void createOrUpdateUser(String username, String rawPassword, Role role) {
+        User user = userRepository.findByUsername(username)
+                .orElse(User.builder().username(username).role(role).enabled(true).build());
+        user.setPassword(passwordEncoder.encode(rawPassword));
+        user.setRole(role);
+        user.setEnabled(true);
+        userRepository.save(user);
+        log.info("Provisioned verified account: {} with role: {}", username, role);
     }
 
     private void seedInitialApplicationsIfEmpty() {

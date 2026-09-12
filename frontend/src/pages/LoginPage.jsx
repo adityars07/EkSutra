@@ -29,12 +29,12 @@ export const LoginPage = ({ onLoginSuccess, onNavigateToCitizen }) => {
   const handleQuickDemo = async (demoRole) => {
     try {
       setLoading(true);
-      const demoUser = demoRole === 'ADMIN' ? 'msins_admin' : 'aditya_authority';
-      await login(demoUser, 'demo123');
-      addToast(`Logged in as demo ${demoRole}!`, 'success');
+      const demoUser = demoRole === 'ADMIN' ? 'admin' : 'aditya_authority';
+      await login(demoUser, 'password123');
+      addToast(`Logged in as official ${demoRole}!`, 'success');
       onLoginSuccess();
     } catch (err) {
-      addToast('Quick login failed', 'error');
+      addToast(err.message || 'Quick login failed', 'error');
     } finally {
       setLoading(false);
     }

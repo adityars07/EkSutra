@@ -17,7 +17,7 @@ import {
   ExternalLink,
   ChevronLeft
 } from 'lucide-react';
-import { INITIAL_SCHEMES, mockStore } from '../services/mockDataStore';
+import { INITIAL_SCHEMES } from '../services/mockDataStore';
 import { api } from '../services/api';
 import { StatusBadge } from '../components/common/StatusBadge';
 import { useNotification } from '../context/NotificationContext';
@@ -91,15 +91,8 @@ export const CitizenPortalPage = ({ onNavigateToOfficer }) => {
         addToast('No application found with the provided identifier.', 'error');
       }
     } catch (err) {
-      console.warn('Live track error, falling back to simulator store', err);
-      const res = mockStore.searchApplications(query);
-      if (res && res.length > 0) {
-        setTrackedResult(res[0]);
-        addToast('Application record found across Maharashtra Interoperability Gateway.', 'success');
-      } else {
-        setTrackedResult(null);
-        addToast('No application found with the provided identifier.', 'error');
-      }
+      setTrackedResult(null);
+      addToast(err.message || 'No application found with the provided identifier.', 'error');
     }
     setHasSearched(true);
   };

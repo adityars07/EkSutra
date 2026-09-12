@@ -44,14 +44,14 @@ export const Navbar = ({ currentTheme, onToggleTheme, onNavigate, activePage }) 
             {lang === 'EN' ? 'मराठी' : 'English'}
           </button>
 
-          <button 
-            className={`mode-pill-toggle ${isLiveMode ? 'live' : 'mock'}`}
-            onClick={toggleApiMode}
-            title={`Click to switch between Live Spring Boot Backend and Offline Simulator (Backend is ${backendHealth.isOnline ? 'Online' : 'Offline'})`}
+          <div 
+            className="mode-pill-toggle live"
+            style={{ cursor: 'default' }}
+            title="Connected directly to Spring Boot Backend (:8080)"
           >
-            <Radio size={12} className={isLiveMode ? 'pulse-icon' : ''} />
-            <span>Mode: {isLiveMode ? 'Live API (:8080)' : 'Simulator'}</span>
-          </button>
+            <Radio size={12} className="pulse-icon" />
+            <span>Live Backend (:8080)</span>
+          </div>
 
           <button 
             className="govt-btn-util"
