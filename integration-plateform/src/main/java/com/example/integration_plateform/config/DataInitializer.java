@@ -35,20 +35,22 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     private void seedUsers() {
-        createOrUpdateUser("admin", "password123", Role.ADMIN);
-        createOrUpdateUser("msins_admin", "password123", Role.ADMIN);
-        createOrUpdateUser("aditya_authority", "password123", Role.AUTHORITY);
-        createOrUpdateUser("authority1", "password123", Role.AUTHORITY);
+        createOrUpdateUser("admin", "password123", Role.ADMIN, "System Administrator", "State Innovation Society (MSInS)");
+        createOrUpdateUser("msins_admin", "password123", Role.ADMIN, "MSInS Director", "Maharashtra State Innovation Society");
+        createOrUpdateUser("aditya_authority", "password123", Role.AUTHORITY, "Aditya RS", "Skill Development & Entrepreneurship");
+        createOrUpdateUser("authority1", "password123", Role.AUTHORITY, "Authority Officer 1", "District Verification Cell");
     }
 
-    private void createOrUpdateUser(String username, String rawPassword, Role role) {
+    private void createOrUpdateUser(String username, String rawPassword, Role role, String fullName, String department) {
         User user = userRepository.findByUsername(username)
                 .orElse(User.builder().username(username).role(role).enabled(true).build());
         user.setPassword(passwordEncoder.encode(rawPassword));
         user.setRole(role);
+        user.setFullName(fullName);
+        user.setDepartment(department);
         user.setEnabled(true);
         userRepository.save(user);
-        log.info("Provisioned verified account: {} with role: {}", username, role);
+        log.info("Provisioned verified account: {} ({}) with role: {}", username, fullName, role);
     }
 
     private void seedInitialApplicationsIfEmpty() {

@@ -3,6 +3,19 @@ import { api } from '../services/api';
 
 const AuthContext = createContext(null);
 
+const formatOfficerName = (username, fullName, role) => {
+  if (fullName && fullName.trim()) {
+    return fullName;
+  }
+  if (!username) {
+    return role === 'ADMIN' ? 'System Administrator' : 'Verification Officer';
+  }
+  return username
+    .split(/[._-]/)
+    .map(part => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+    .join(' ');
+};
+
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(() => {
     const saved = localStorage.getItem('eksutra_token');
@@ -18,7 +31,12 @@ export const AuthProvider = ({ children }) => {
     const savedUser = localStorage.getItem('eksutra_user');
     if (savedToken && !savedToken.startsWith('demo-') && !savedToken.startsWith('mock-') && savedUser) {
       try {
-        return JSON.parse(savedUser);
+        const parsed = JSON.parse(savedUser);
+        if (parsed && (parsed.name?.includes('Aditya Jadhav') || parsed.name?.includes('Rajesh Verma'))) {
+          parsed.name = formatOfficerName(parsed.username, null, parsed.role);
+          localStorage.setItem('eksutra_user', JSON.stringify(parsed));
+        }
+        return parsed;
       } catch (e) {
         return null;
       }
@@ -46,11 +64,13 @@ export const AuthProvider = ({ children }) => {
   const login = async (username, password) => {
     const res = await api.auth.login({ username, password });
     const roleClean = res.role ? res.role.replace('ROLE_', '') : (username.toLowerCase().includes('admin') ? 'ADMIN' : 'AUTHORITY');
+    const officerName = formatOfficerName(res.username || username, res.fullName, roleClean);
+    const departmentName = res.department || (roleClean === 'ADMIN' ? 'Maharashtra State Innovation Society (MSInS)' : 'Skill Development & Entrepreneurship');
     const userData = {
       username: res.username || username,
       role: roleClean,
-      name: roleClean === 'ADMIN' ? 'Rajesh Verma (Chief Admin)' : 'Aditya Jadhav (Verification Officer)',
-      department: roleClean === 'ADMIN' ? 'Maharashtra State Innovation Society (MSInS)' : 'Skill Development & Entrepreneurship'
+      name: officerName,
+      department: departmentName
     };
     setUser(userData);
     setToken(res.token);
