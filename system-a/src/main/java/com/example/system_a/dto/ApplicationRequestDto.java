@@ -13,9 +13,10 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class ApplicationRequestDto {
     private String applicationId;
-    private String citizenId;
-    private String applicantName;
-    private LocalDate dateOfBirth;
+    private String beneficiaryId;
+    private String fname;
+    private String lname;
+    private LocalDate dob;
     private String schemeCode;
     private boolean consentGiven;
 }
