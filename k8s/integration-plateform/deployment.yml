@@ -28,8 +28,11 @@ spec:
             capabilities:
               drop:
                 - ALL
+          volumeMounts: 
+            - name: tmp-volume
+              mountPath: /tmp
           env: 
-            - name: SPRING_DATA_MONGO_URI
+            - name: SPRING_DATA_MONGODB_URI
               valueFrom: 
                 secretKeyRef: 
                   name: secret
@@ -41,3 +44,6 @@ spec:
             limits:
               memory: "512Mi"
               cpu: "256m"
+      volumes: 
+        - name: tmp-volume
+          emptyDir: {}
