@@ -30,6 +30,33 @@ services:
     networks:
       - monitoring
 
+  system-a:
+    build:
+      context: ./system-a
+    container_name: system-a
+    restart: on-failure
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://mongo:27017/SystemA
+    depends_on:
+      - mongo
+    networks:
+      - monitoring
+
+  system-a-frontend:
+    build:
+      context: ./system-a-frontend
+    container_name: system-a-frontend
+    ports:
+      - "5174:5174"
+    environment:
+      API_PROXY_TARGET: http://system-a:8081
+    depends_on:
+      - system-a
+    networks:
+      - monitoring
+
   system-b:
     build:
       context: ./system-b
@@ -38,7 +65,7 @@ services:
     ports:
       - "8082:8082"
     environment:
-      MONGODB_URI: mongodb://mongo:27017/systemB
+      SPRING_DATA_MONGODB_URI: mongodb://mongo:27017/systemB
     depends_on:
       - mongo
     networks:
@@ -51,6 +78,10 @@ services:
     restart: on-failure
     ports:
       - "8083:8083"
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://mongo:27017/systemC
+    depends_on:
+      - mongo
     networks:
       - monitoring
 

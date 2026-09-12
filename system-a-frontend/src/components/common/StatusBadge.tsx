@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckCircle2, Clock, AlertTriangle } from 'lucide-react';
+import { CheckCircle2, Clock } from 'lucide-react';
 
 interface StatusBadgeProps {
   status: string;
@@ -21,7 +21,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
     return (
       <span className="status-badge received">
         <Clock size={13} />
-        Received (Local)
+        Received (Local Only)
       </span>
     );
   }

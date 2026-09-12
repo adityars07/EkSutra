@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldCheck, Lock, ExternalLink } from 'lucide-react';
+import { Lock } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   return (
@@ -7,42 +7,42 @@ export const Footer: React.FC = () => {
       <div className="gov-footer-inner">
         <div className="gov-footer-grid">
           <div>
-            <h4>Government Service Portal</h4>
+            <h4>Department of Citizen Services</h4>
             <p>
-              An initiative under the Citizen Welfare Administration, providing seamless, single-window access
-              to government schemes, scholarships, subsidies, and employment generation programs.
+              An official initiative under the Citizen Welfare Administration, Government of Maharashtra.
+              Providing transparent, single-window access to government welfare schemes, innovation grants, and direct benefit transfer services.
             </p>
           </div>
 
           <div>
-            <h4>Citizen Services</h4>
+            <h4>Welfare & Innovation Schemes</h4>
             <ul>
-              <li>Innovation & Startup Grants</li>
-              <li>Vocational Skill Subsidy</li>
-              <li>Micro-Enterprise Assistance</li>
-              <li>Direct Benefit Transfer Verification</li>
+              <li>Innovation & Startup Seed Grant (EDU01)</li>
+              <li>Vocational Skill Training Subsidy (SKL02)</li>
+              <li>Micro-Enterprise Support Assistance (ENT03)</li>
+              <li>Direct Benefit Transfer Verification Engine</li>
             </ul>
           </div>
 
           <div>
-            <h4>Data Privacy & Governance</h4>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 6, color: '#e2e8f0' }}>
-              <Lock size={16} color="#86efac" />
-              <span style={{ fontSize: '0.84rem' }}>Consent-Based Citizen Data Exchange</span>
+            <h4>Data Sovereignty & Privacy</h4>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 8, color: 'var(--ivory-100)' }}>
+              <Lock size={16} color="var(--gold-400)" />
+              <span style={{ fontSize: '0.84rem', fontWeight: 600 }}>Consent-Based Citizen Data Exchange</span>
             </div>
             <p style={{ marginTop: 8, fontSize: '0.78rem' }}>
-              Cross-system data verification is initiated strictly with explicit citizen consent in accordance with the Digital Personal Data Protection Act.
+              Cross-system data verification is initiated strictly with explicit citizen consent under Digital Personal Data Protection principles.
             </p>
           </div>
         </div>
 
         <div className="gov-footer-bottom">
-          <span>&copy; {new Date().getFullYear()} Department of Citizen Services. All Rights Reserved.</span>
+          <span>&copy; {new Date().getFullYear()} Department of Citizen Services, Government of Maharashtra. All Rights Reserved.</span>
           <div style={{ display: 'flex', gap: 16 }}>
-            <span>Privacy Policy</span>
-            <span>Terms of Service</span>
-            <span>Hyperlink Policy</span>
-            <span>Security Compliance</span>
+            <span style={{ cursor: 'pointer' }}>Privacy Policy</span>
+            <span style={{ cursor: 'pointer' }}>Terms of Service</span>
+            <span style={{ cursor: 'pointer' }}>Hyperlink Policy</span>
+            <span style={{ cursor: 'pointer' }}>Security Compliance</span>
           </div>
         </div>
       </div>
