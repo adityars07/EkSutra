@@ -38,3 +38,12 @@ frontend/dist/
 frontend/dist-ssr/
 frontend/*.local
 
+system-a-frontend/node_modules/
+system-a-frontend/dist/
+system-a-frontend/dist-ssr/
+system-a-frontend/*.local
+
+### Scratch / Temp ###
+scratch/
+
+

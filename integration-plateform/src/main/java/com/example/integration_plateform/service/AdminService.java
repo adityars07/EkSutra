@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -132,5 +133,12 @@ public class AdminService {
         );
 
         return requestRepository.save(actionRequest);
+    }
+
+    public List<ApplicationActionRequest> getActionRequests(RequestStatus status) {
+        if (status != null) {
+            return requestRepository.findByStatus(status);
+        }
+        return requestRepository.findAll();
     }
 }

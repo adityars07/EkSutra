@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(
-        value = "api/v1/dashboard",
+        value = "/api/v1/dashboard",
         produces = MediaType.APPLICATION_JSON_VALUE
 )
 public class DashboardController {

@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ApplicationActionRequestService {
@@ -133,5 +135,9 @@ public class ApplicationActionRequestService {
                 );
             }
         }
+    }
+
+    public List<ApplicationActionRequest> getRequestsByApplicationId(String applicationId) {
+        return requestRepository.findByApplicationId(applicationId);
     }
 }

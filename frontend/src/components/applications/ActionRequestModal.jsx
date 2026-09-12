@@ -54,22 +54,27 @@ export const ActionRequestModal = ({ application, onClose, onSuccess }) => {
 
             <div className="form-group">
               <label className="form-label">Recommended Action</label>
-              <div style={{ display: 'flex', gap: 12 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
                 <button
                   type="button"
                   className={`btn ${action === 'APPROVE' ? 'btn-emerald' : 'btn-outline'}`}
-                  style={{ flex: 1 }}
                   onClick={() => setAction('APPROVE')}
                 >
-                  Recommend Approval
+                  Approve
+                </button>
+                <button
+                  type="button"
+                  className={`btn ${action === 'ON_HOLD' ? 'btn-saffron' : 'btn-outline'}`}
+                  onClick={() => setAction('ON_HOLD')}
+                >
+                  Put On Hold
                 </button>
                 <button
                   type="button"
                   className={`btn ${action === 'REJECT' ? 'btn-danger' : 'btn-outline'}`}
-                  style={{ flex: 1 }}
                   onClick={() => setAction('REJECT')}
                 >
-                  Recommend Rejection
+                  Reject
                 </button>
               </div>
             </div>
