@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  CheckSquare, 
-  Square, 
   Send, 
   Info, 
   CheckCircle2, 
   Clock, 
   Loader2, 
-  AlertCircle,
-  ShieldCheck,
-  Building
+  ShieldCheck
 } from 'lucide-react';
 import { SCHEMES, api } from '../services/api';
 import { ApplicationFormInput, ApplicationRecord } from '../types/application';
@@ -21,11 +17,13 @@ interface ApplyPageProps {
 
 export const ApplyPage: React.FC<ApplyPageProps> = ({ preselectedScheme, onSuccess }) => {
   const [formData, setFormData] = useState<ApplicationFormInput>({
-    applicantName: 'Rahul Sharma',
-    citizenId: 'CIT-10042',
-    dateOfBirth: '2002-04-12',
+    applicationId: '',
+    beneficiaryId: 'CIT-10042',
+    fname: 'Rahul',
+    lname: 'Sharma',
+    dob: '2002-04-12',
     schemeCode: preselectedScheme || SCHEMES[0].code,
-    consentGiven: true, // Default to true for easy test, citizen can uncheck
+    consentGiven: true,
   });
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -40,19 +38,21 @@ export const ApplyPage: React.FC<ApplyPageProps> = ({ preselectedScheme, onSucce
 
   const validate = () => {
     const errs: { [key: string]: string } = {};
-    if (!formData.applicantName.trim()) {
-      errs.applicantName = 'Applicant full name is required.';
+    if (!formData.fname.trim()) {
+      errs.fname = 'First name is required.';
     }
-    if (!formData.citizenId.trim()) {
-      errs.citizenId = 'Citizen ID / Aadhaar is required.';
+    if (!formData.lname.trim()) {
+      errs.lname = 'Last name is required.';
     }
-    if (!formData.dateOfBirth) {
-      errs.dateOfBirth = 'Date of birth is required.';
+    if (!formData.beneficiaryId.trim()) {
+      errs.beneficiaryId = 'Beneficiary ID / Citizen Identifier is required.';
+    }
+    if (!formData.dob) {
+      errs.dob = 'Date of birth is required.';
     }
     if (!formData.schemeCode) {
       errs.schemeCode = 'Please select a welfare scheme.';
     }
-    // Note: Consent is NOT required by design!
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -62,14 +62,11 @@ export const ApplyPage: React.FC<ApplyPageProps> = ({ preselectedScheme, onSucce
     if (!validate()) return;
 
     setIsSubmitting(true);
-    setProcessingStep(1); // Application received
+    setProcessingStep(1);
 
     try {
-      // Step 2 progression
-      setTimeout(() => setProcessingStep(2), 600); // Consent verified
-
-      // Step 3 progression
-      setTimeout(() => setProcessingStep(3), 1200); // Cross-verification / Local storage
+      setTimeout(() => setProcessingStep(2), 600);
+      setTimeout(() => setProcessingStep(3), 1200);
 
       const record = await api.submitApplication(formData);
 
@@ -84,9 +81,9 @@ export const ApplyPage: React.FC<ApplyPageProps> = ({ preselectedScheme, onSucce
   };
 
   return (
-    <div style={{ maxWidth: 720, margin: '0 auto' }}>
-      <div style={{ marginBottom: 24, textAlign: 'center' }}>
-        <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--gov-primary)' }}>
+    <div style={{ maxWidth: 740, margin: '0 auto' }}>
+      <div style={{ marginBottom: 28, textAlign: 'center' }}>
+        <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--gov-text)' }}>
           Government Scheme Application Form
         </h2>
         <p style={{ color: 'var(--gov-text-muted)', fontSize: '0.88rem', marginTop: 4 }}>
@@ -97,30 +94,38 @@ export const ApplyPage: React.FC<ApplyPageProps> = ({ preselectedScheme, onSucce
       {isSubmitting ? (
         /* Animated Multi-Step Processing State */
         <div className="card" style={{ padding: 40, textAlign: 'center' }}>
-          <div style={{ display: 'inline-flex', padding: 14, background: 'var(--gov-primary-light)', borderRadius: '50%', marginBottom: 16 }}>
-            <Loader2 size={32} className="spin" color="var(--gov-primary)" />
+          <div
+            style={{
+              display: 'inline-flex',
+              padding: 14,
+              background: 'var(--forest-100)',
+              borderRadius: '50%',
+              marginBottom: 16,
+            }}
+          >
+            <Loader2 size={32} className="spin" color="var(--forest-800)" />
           </div>
-          <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--gov-primary)', marginBottom: 8 }}>
+          <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--gov-text)', marginBottom: 8 }}>
             Processing Application
           </h3>
           <p style={{ fontSize: '0.88rem', color: 'var(--gov-text-secondary)', marginBottom: 28 }}>
             Communicating with government registry and processing your submission...
           </p>
 
-          <div style={{ maxWidth: 420, margin: '0 auto', textAlign: 'left', display: 'flex', flexDirection: 'column', gap: 14 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: processingStep >= 1 ? '#15803d' : '#94a3b8' }}>
+          <div style={{ maxWidth: 440, margin: '0 auto', textAlign: 'left', display: 'flex', flexDirection: 'column', gap: 14 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: processingStep >= 1 ? 'var(--forest-800)' : 'var(--stone-500)' }}>
               <CheckCircle2 size={18} />
               <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>Application received & validated</span>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: processingStep >= 2 ? '#15803d' : '#94a3b8' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: processingStep >= 2 ? 'var(--forest-800)' : 'var(--stone-500)' }}>
               <CheckCircle2 size={18} />
               <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>
                 Consent status: {formData.consentGiven ? 'Granted (Cross-System Authorized)' : 'Not Provided (Local Filing Only)'}
               </span>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: processingStep >= 3 ? '#0f2d59' : '#94a3b8' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: processingStep >= 3 ? 'var(--gold-700)' : 'var(--stone-500)' }}>
               {processingStep >= 3 ? <Loader2 size={18} className="spin" /> : <Clock size={18} />}
               <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>
                 {formData.consentGiven
@@ -131,41 +136,72 @@ export const ApplyPage: React.FC<ApplyPageProps> = ({ preselectedScheme, onSucce
           </div>
         </div>
       ) : (
-        /* The Application Form */
+        /* The Application Form matching ApplicationRequestDto */
         <form onSubmit={handleSubmit} className="card">
-          {/* Applicant Name */}
+
+          {/* Application Reference ID (Optional) */}
           <div className="form-group">
             <label className="form-label">
-              Applicant Full Name <span className="req">*</span>
+              Application Reference ID (Optional)
             </label>
             <input
               type="text"
               className="form-input"
-              placeholder="e.g. Rahul Sharma"
-              value={formData.applicantName}
-              onChange={(e) => setFormData({ ...formData, applicantName: e.target.value })}
+              placeholder="e.g. APP-10042 (Auto-generated if left blank)"
+              value={formData.applicationId || ''}
+              onChange={(e) => setFormData({ ...formData, applicationId: e.target.value })}
             />
-            {errors.applicantName && <p style={{ color: '#dc2626', fontSize: '0.78rem', marginTop: 4 }}>{errors.applicantName}</p>}
-            <p className="form-hint">Enter your official name as registered on government identity documents.</p>
+            <p className="form-hint">Leave blank for auto-generation, or enter an assigned tracking reference.</p>
           </div>
 
-          {/* Citizen ID */}
+          {/* Beneficiary ID */}
           <div className="form-group">
             <label className="form-label">
-              Citizen ID / Beneficiary Identifier <span className="req">*</span>
+              Beneficiary ID / Citizen Identifier <span className="req">*</span>
             </label>
             <input
               type="text"
               className="form-input"
               placeholder="e.g. CIT-10042 or 12-digit Aadhaar"
-              value={formData.citizenId}
-              onChange={(e) => setFormData({ ...formData, citizenId: e.target.value })}
+              value={formData.beneficiaryId}
+              onChange={(e) => setFormData({ ...formData, beneficiaryId: e.target.value })}
             />
-            {errors.citizenId && <p style={{ color: '#dc2626', fontSize: '0.78rem', marginTop: 4 }}>{errors.citizenId}</p>}
+            {errors.beneficiaryId && <p style={{ color: 'var(--terracotta-600)', fontSize: '0.78rem', marginTop: 4 }}>{errors.beneficiaryId}</p>}
             <p className="form-hint">Your unique citizen identifier used for DBT welfare mapping.</p>
           </div>
 
-          {/* Date of Birth */}
+          {/* First Name & Last Name in 2-Column Grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+            <div className="form-group">
+              <label className="form-label">
+                First Name <span className="req">*</span>
+              </label>
+              <input
+                type="text"
+                className="form-input"
+                placeholder="e.g. Rahul"
+                value={formData.fname}
+                onChange={(e) => setFormData({ ...formData, fname: e.target.value })}
+              />
+              {errors.fname && <p style={{ color: 'var(--terracotta-600)', fontSize: '0.78rem', marginTop: 4 }}>{errors.fname}</p>}
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">
+                Last Name <span className="req">*</span>
+              </label>
+              <input
+                type="text"
+                className="form-input"
+                placeholder="e.g. Sharma"
+                value={formData.lname}
+                onChange={(e) => setFormData({ ...formData, lname: e.target.value })}
+              />
+              {errors.lname && <p style={{ color: 'var(--terracotta-600)', fontSize: '0.78rem', marginTop: 4 }}>{errors.lname}</p>}
+            </div>
+          </div>
+
+          {/* Date of Birth (dob) */}
           <div className="form-group">
             <label className="form-label">
               Date of Birth <span className="req">*</span>
@@ -173,10 +209,10 @@ export const ApplyPage: React.FC<ApplyPageProps> = ({ preselectedScheme, onSucce
             <input
               type="date"
               className="form-input"
-              value={formData.dateOfBirth}
-              onChange={(e) => setFormData({ ...formData, dateOfBirth: e.target.value })}
+              value={formData.dob}
+              onChange={(e) => setFormData({ ...formData, dob: e.target.value })}
             />
-            {errors.dateOfBirth && <p style={{ color: '#dc2626', fontSize: '0.78rem', marginTop: 4 }}>{errors.dateOfBirth}</p>}
+            {errors.dob && <p style={{ color: 'var(--terracotta-600)', fontSize: '0.78rem', marginTop: 4 }}>{errors.dob}</p>}
           </div>
 
           {/* Scheme Selection */}
@@ -195,13 +231,13 @@ export const ApplyPage: React.FC<ApplyPageProps> = ({ preselectedScheme, onSucce
                 </option>
               ))}
             </select>
-            {errors.schemeCode && <p style={{ color: '#dc2626', fontSize: '0.78rem', marginTop: 4 }}>{errors.schemeCode}</p>}
+            {errors.schemeCode && <p style={{ color: 'var(--terracotta-600)', fontSize: '0.78rem', marginTop: 4 }}>{errors.schemeCode}</p>}
           </div>
 
-          {/* ⭐⭐⭐ CRITICAL SECTION: Data Verification Consent ⭐⭐⭐ */}
+          {/* ⭐ Data Verification Consent Card ⭐ */}
           <div className={`consent-card ${formData.consentGiven ? 'checked' : ''}`}>
             <div className="consent-header">
-              <ShieldCheck size={18} color={formData.consentGiven ? '#15803d' : '#0f2d59'} />
+              <ShieldCheck size={18} color={formData.consentGiven ? 'var(--forest-700)' : 'var(--stone-600)'} />
               <span>Data Verification Consent (Voluntary)</span>
             </div>
 
@@ -218,17 +254,17 @@ export const ApplyPage: React.FC<ApplyPageProps> = ({ preselectedScheme, onSucce
             </label>
 
             <div className="consent-subtext">
-              <Info size={14} style={{ display: 'inline', marginRight: 6, verticalAlign: -2 }} />
+              <Info size={14} style={{ display: 'inline', marginRight: 6, verticalAlign: -2 }} color="var(--gold-700)" />
               <strong>Important Notice:</strong> Your application can still be submitted without consent, but cross-system verification will not be initiated.
             </div>
           </div>
 
           {/* Form Actions */}
-          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12, marginTop: 24, paddingTop: 16, borderTop: '1px solid var(--gov-border)' }}>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12, marginTop: 24, paddingTop: 18, borderTop: '1px solid var(--gov-border)' }}>
             <button
               type="submit"
               className="btn btn-primary btn-lg"
-              style={{ minWidth: 200 }}
+              style={{ minWidth: 220 }}
             >
               <Send size={16} />
               <span>Submit Application</span>

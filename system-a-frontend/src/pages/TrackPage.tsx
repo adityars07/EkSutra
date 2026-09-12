@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, CheckCircle2, Clock, XCircle, ArrowRight, ShieldCheck, FileText, Info } from 'lucide-react';
+import { Search, CheckCircle2, Clock, Info } from 'lucide-react';
 import { api } from '../services/api';
 import { ApplicationRecord } from '../types/application';
 import { StatusBadge } from '../components/common/StatusBadge';
@@ -20,7 +20,7 @@ export const TrackPage: React.FC<TrackPageProps> = ({ initialId, onNavigate }) =
     if (e) e.preventDefault();
     const query = searchId.trim();
     if (!query) {
-      setErrorMsg('Please enter a valid Application ID (e.g. APP-10042) or Citizen ID.');
+      setErrorMsg('Please enter a valid Application ID (e.g. APP-10042) or Beneficiary ID.');
       return;
     }
 
@@ -49,15 +49,20 @@ export const TrackPage: React.FC<TrackPageProps> = ({ initialId, onNavigate }) =
     }
   }, [initialId]);
 
+  const nameDisplay = application
+    ? (application.fname && application.lname ? `${application.fname} ${application.lname}` : (application.applicantName || 'Applicant'))
+    : '';
+  const beneficiaryDisplay = application ? (application.beneficiaryId || application.citizenId || 'N/A') : '';
+
   return (
     <div style={{ maxWidth: 740, margin: '0 auto' }}>
       {/* Title */}
       <div style={{ textAlign: 'center', marginBottom: 28 }}>
-        <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--gov-primary)' }}>
+        <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--gov-text)' }}>
           Track Your Application Status
         </h2>
         <p style={{ color: 'var(--gov-text-muted)', fontSize: '0.88rem', marginTop: 4 }}>
-          Enter your Application Reference ID or Citizen Identifier to view the real-time processing status.
+          Enter your Application Reference ID or Beneficiary Identifier to view real-time processing status.
         </p>
       </div>
 
@@ -69,7 +74,7 @@ export const TrackPage: React.FC<TrackPageProps> = ({ initialId, onNavigate }) =
               type="text"
               className="form-input"
               style={{ paddingLeft: 40, fontSize: '0.96rem' }}
-              placeholder="Enter Application ID (e.g. APP-10042) or Citizen ID..."
+              placeholder="Enter Application ID (e.g. APP-10042) or Beneficiary ID..."
               value={searchId}
               onChange={(e) => setSearchId(e.target.value)}
             />
@@ -82,7 +87,7 @@ export const TrackPage: React.FC<TrackPageProps> = ({ initialId, onNavigate }) =
         </form>
 
         {errorMsg && (
-          <p style={{ color: '#dc2626', fontSize: '0.84rem', marginTop: 10, display: 'flex', alignItems: 'center', gap: 6 }}>
+          <p style={{ color: 'var(--terracotta-600)', fontSize: '0.84rem', marginTop: 10, display: 'flex', alignItems: 'center', gap: 6 }}>
             <Info size={14} />
             <span>{errorMsg}</span>
           </p>
@@ -98,11 +103,11 @@ export const TrackPage: React.FC<TrackPageProps> = ({ initialId, onNavigate }) =
               <span style={{ fontSize: '0.78rem', color: 'var(--gov-text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>
                 Application Record
               </span>
-              <h3 style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--gov-primary)', marginTop: 2 }}>
+              <h3 style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--forest-800)', marginTop: 2, fontFamily: 'var(--font-mono)' }}>
                 {application.applicationId}
               </h3>
               <p style={{ fontSize: '0.86rem', color: 'var(--gov-text-secondary)', marginTop: 2 }}>
-                Applicant: <strong>{application.applicantName}</strong> &bull; Scheme: <span style={{ fontWeight: 600 }}>{application.schemeCode}</span>
+                Applicant: <strong>{nameDisplay}</strong> &bull; Scheme: <span style={{ fontWeight: 600 }}>{application.schemeCode}</span>
               </p>
             </div>
             <StatusBadge status={application.status} />
@@ -110,19 +115,19 @@ export const TrackPage: React.FC<TrackPageProps> = ({ initialId, onNavigate }) =
 
           {/* Quick Metrics */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 14, marginBottom: 24 }}>
-            <div style={{ background: '#f8fafc', padding: 12, borderRadius: 6, border: '1px solid #e2e8f0' }}>
-              <div style={{ fontSize: '0.72rem', color: 'var(--gov-text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>Citizen ID</div>
-              <div style={{ fontSize: '0.92rem', fontWeight: 600, marginTop: 2 }}>{application.citizenId}</div>
+            <div style={{ background: 'var(--gov-subtle)', padding: 12, borderRadius: 6, border: '1px solid var(--gov-border-medium)' }}>
+              <div style={{ fontSize: '0.72rem', color: 'var(--gov-text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>Beneficiary ID</div>
+              <div style={{ fontSize: '0.92rem', fontWeight: 600, marginTop: 2 }}>{beneficiaryDisplay}</div>
             </div>
 
-            <div style={{ background: '#f8fafc', padding: 12, borderRadius: 6, border: '1px solid #e2e8f0' }}>
+            <div style={{ background: 'var(--gov-subtle)', padding: 12, borderRadius: 6, border: '1px solid var(--gov-border-medium)' }}>
               <div style={{ fontSize: '0.72rem', color: 'var(--gov-text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>Consent Granted</div>
-              <div style={{ fontSize: '0.92rem', fontWeight: 700, marginTop: 2, color: application.consentGiven ? '#15803d' : '#64748b' }}>
+              <div style={{ fontSize: '0.92rem', fontWeight: 700, marginTop: 2, color: application.consentGiven ? 'var(--forest-800)' : 'var(--stone-500)' }}>
                 {application.consentGiven ? '✓ Yes (Authorized)' : '✗ No (Withheld)'}
               </div>
             </div>
 
-            <div style={{ background: '#f8fafc', padding: 12, borderRadius: 6, border: '1px solid #e2e8f0' }}>
+            <div style={{ background: 'var(--gov-subtle)', padding: 12, borderRadius: 6, border: '1px solid var(--gov-border-medium)' }}>
               <div style={{ fontSize: '0.72rem', color: 'var(--gov-text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>Cross-System Status</div>
               <div style={{ fontSize: '0.92rem', fontWeight: 600, marginTop: 2 }}>
                 {application.crossSystemVerification === 'COMPLETED' ? 'Completed' : 'Not Initiated'}
@@ -132,7 +137,7 @@ export const TrackPage: React.FC<TrackPageProps> = ({ initialId, onNavigate }) =
 
           {/* Detailed Visual Timeline */}
           <div>
-            <h4 style={{ fontSize: '0.94rem', fontWeight: 700, color: 'var(--gov-primary)', marginBottom: 12 }}>
+            <h4 style={{ fontSize: '0.94rem', fontWeight: 700, color: 'var(--gov-text)', marginBottom: 14 }}>
               Application Lifecycle Timeline
             </h4>
 
@@ -186,7 +191,7 @@ export const TrackPage: React.FC<TrackPageProps> = ({ initialId, onNavigate }) =
                   <div className="timeline-dot skipped">
                     <Clock size={13} />
                   </div>
-                  <div className="timeline-title" style={{ color: '#64748b' }}>Cross-System Verification Not Initiated</div>
+                  <div className="timeline-title" style={{ color: 'var(--gov-text-muted)' }}>Cross-System Verification Not Initiated</div>
                   <div className="timeline-desc">
                     Consent was not provided by the citizen. No external data exchange or automated checks performed.
                   </div>

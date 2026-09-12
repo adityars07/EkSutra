@@ -59,11 +59,24 @@ function saveToLocalStore(app: ApplicationRecord) {
 
 export const api = {
   async submitApplication(input: ApplicationFormInput): Promise<ApplicationRecord> {
+    const payload = {
+      applicationId: input.applicationId && input.applicationId.trim() !== '' ? input.applicationId.trim() : undefined,
+      beneficiaryId: input.beneficiaryId || input.citizenId || 'CIT-10042',
+      citizenId: input.beneficiaryId || input.citizenId || 'CIT-10042',
+      fname: input.fname,
+      lname: input.lname,
+      applicantName: `${input.fname} ${input.lname}`.trim(),
+      dob: input.dob || input.dateOfBirth,
+      dateOfBirth: input.dob || input.dateOfBirth,
+      schemeCode: input.schemeCode,
+      consentGiven: input.consentGiven,
+    };
+
     try {
       const res = await fetch('/api/v1/application', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(input),
+        body: JSON.stringify(payload),
       });
 
       if (res.ok) {
@@ -75,19 +88,22 @@ export const api = {
       console.warn('System A backend call unreachable, executing reliable client fallback', err);
     }
 
-    // Reliable fallback simulation for resilient demos
-    const generatedId = 'APP-' + Math.floor(10000 + Math.random() * 90000);
+    // Reliable fallback simulation for offline/demo resilience
+    const generatedId = payload.applicationId || ('APP-' + Math.floor(10000 + Math.random() * 90000));
     const simulatedRecord: ApplicationRecord = {
       applicationId: generatedId,
-      citizenId: input.citizenId,
-      applicantName: input.applicantName,
-      dob: input.dateOfBirth,
-      schemeCode: input.schemeCode,
-      consentGiven: input.consentGiven,
-      status: input.consentGiven ? 'ELIGIBILITY_VERIFIED' : 'RECEIVED',
-      crossSystemVerification: input.consentGiven ? 'COMPLETED' : 'NOT_INITIATED',
-      overallEligibility: input.consentGiven ? true : null,
-      correlationId: input.consentGiven ? 'EKS-TXN-' + Math.random().toString(36).substring(2, 9).toUpperCase() : undefined,
+      beneficiaryId: payload.beneficiaryId,
+      citizenId: payload.beneficiaryId,
+      fname: payload.fname,
+      lname: payload.lname,
+      applicantName: payload.applicantName,
+      dob: payload.dob,
+      schemeCode: payload.schemeCode,
+      consentGiven: payload.consentGiven,
+      status: payload.consentGiven ? 'ELIGIBILITY_VERIFIED' : 'RECEIVED',
+      crossSystemVerification: payload.consentGiven ? 'COMPLETED' : 'NOT_INITIATED',
+      overallEligibility: payload.consentGiven ? true : null,
+      correlationId: payload.consentGiven ? 'EKS-TXN-' + Math.random().toString(36).substring(2, 9).toUpperCase() : undefined,
       createdAt: new Date().toISOString(),
     };
 
@@ -108,9 +124,11 @@ export const api = {
     }
 
     const store = getLocalStore();
+    const query = applicationId.trim().toLowerCase();
     const match = store.find(
-      (a) => a.applicationId.toLowerCase() === applicationId.trim().toLowerCase() ||
-             a.citizenId.toLowerCase() === applicationId.trim().toLowerCase()
+      (a) => a.applicationId.toLowerCase() === query ||
+             (a.beneficiaryId && a.beneficiaryId.toLowerCase() === query) ||
+             (a.citizenId && a.citizenId.toLowerCase() === query)
     );
     return match || null;
   },
