@@ -39,10 +39,6 @@ export const api = {
       const data = await res.json();
       if (data && data.token) {
         localStorage.setItem('eksutra_token', data.token);
-        localStorage.setItem('eksutra_user', JSON.stringify({
-          username: data.username,
-          role: data.role ? data.role.replace('ROLE_', '') : 'AUTHORITY'
-        }));
       }
       return data;
     },
