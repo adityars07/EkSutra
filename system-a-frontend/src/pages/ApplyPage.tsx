@@ -17,9 +17,11 @@ interface ApplyPageProps {
 
 export const ApplyPage: React.FC<ApplyPageProps> = ({ preselectedScheme, onSuccess }) => {
   const [formData, setFormData] = useState<ApplicationFormInput>({
-    applicantName: 'Rahul Sharma',
-    citizenId: 'CIT-10042',
-    dateOfBirth: '2002-04-12',
+    applicationId: '',
+    beneficiaryId: 'CIT-10042',
+    fname: 'Rahul',
+    lname: 'Sharma',
+    dob: '2002-04-12',
     schemeCode: preselectedScheme || SCHEMES[0].code,
     consentGiven: true,
   });
@@ -36,14 +38,17 @@ export const ApplyPage: React.FC<ApplyPageProps> = ({ preselectedScheme, onSucce
 
   const validate = () => {
     const errs: { [key: string]: string } = {};
-    if (!formData.applicantName.trim()) {
-      errs.applicantName = 'Applicant full name is required.';
+    if (!formData.fname.trim()) {
+      errs.fname = 'First name is required.';
     }
-    if (!formData.citizenId.trim()) {
-      errs.citizenId = 'Citizen ID / Aadhaar is required.';
+    if (!formData.lname.trim()) {
+      errs.lname = 'Last name is required.';
     }
-    if (!formData.dateOfBirth) {
-      errs.dateOfBirth = 'Date of birth is required.';
+    if (!formData.beneficiaryId.trim()) {
+      errs.beneficiaryId = 'Beneficiary ID / Citizen Identifier is required.';
+    }
+    if (!formData.dob) {
+      errs.dob = 'Date of birth is required.';
     }
     if (!formData.schemeCode) {
       errs.schemeCode = 'Please select a welfare scheme.';
@@ -76,7 +81,7 @@ export const ApplyPage: React.FC<ApplyPageProps> = ({ preselectedScheme, onSucce
   };
 
   return (
-    <div style={{ maxWidth: 720, margin: '0 auto' }}>
+    <div style={{ maxWidth: 740, margin: '0 auto' }}>
       <div style={{ marginBottom: 28, textAlign: 'center' }}>
         <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--gov-text)' }}>
           Government Scheme Application Form
@@ -87,7 +92,7 @@ export const ApplyPage: React.FC<ApplyPageProps> = ({ preselectedScheme, onSucce
       </div>
 
       {isSubmitting ? (
-        /* Multi-Step Processing State */
+        /* Animated Multi-Step Processing State */
         <div className="card" style={{ padding: 40, textAlign: 'center' }}>
           <div
             style={{
@@ -131,41 +136,72 @@ export const ApplyPage: React.FC<ApplyPageProps> = ({ preselectedScheme, onSucce
           </div>
         </div>
       ) : (
-        /* The Application Form */
+        /* The Application Form matching ApplicationRequestDto */
         <form onSubmit={handleSubmit} className="card">
-          {/* Applicant Name */}
+
+          {/* Application Reference ID (Optional) */}
           <div className="form-group">
             <label className="form-label">
-              Applicant Full Name <span className="req">*</span>
+              Application Reference ID (Optional)
             </label>
             <input
               type="text"
               className="form-input"
-              placeholder="e.g. Rahul Sharma"
-              value={formData.applicantName}
-              onChange={(e) => setFormData({ ...formData, applicantName: e.target.value })}
+              placeholder="e.g. APP-10042 (Auto-generated if left blank)"
+              value={formData.applicationId || ''}
+              onChange={(e) => setFormData({ ...formData, applicationId: e.target.value })}
             />
-            {errors.applicantName && <p style={{ color: 'var(--terracotta-600)', fontSize: '0.78rem', marginTop: 4 }}>{errors.applicantName}</p>}
-            <p className="form-hint">Enter your official name as registered on government identity documents.</p>
+            <p className="form-hint">Leave blank for auto-generation, or enter an assigned tracking reference.</p>
           </div>
 
-          {/* Citizen ID */}
+          {/* Beneficiary ID */}
           <div className="form-group">
             <label className="form-label">
-              Citizen ID / Beneficiary Identifier <span className="req">*</span>
+              Beneficiary ID / Citizen Identifier <span className="req">*</span>
             </label>
             <input
               type="text"
               className="form-input"
               placeholder="e.g. CIT-10042 or 12-digit Aadhaar"
-              value={formData.citizenId}
-              onChange={(e) => setFormData({ ...formData, citizenId: e.target.value })}
+              value={formData.beneficiaryId}
+              onChange={(e) => setFormData({ ...formData, beneficiaryId: e.target.value })}
             />
-            {errors.citizenId && <p style={{ color: 'var(--terracotta-600)', fontSize: '0.78rem', marginTop: 4 }}>{errors.citizenId}</p>}
+            {errors.beneficiaryId && <p style={{ color: 'var(--terracotta-600)', fontSize: '0.78rem', marginTop: 4 }}>{errors.beneficiaryId}</p>}
             <p className="form-hint">Your unique citizen identifier used for DBT welfare mapping.</p>
           </div>
 
-          {/* Date of Birth */}
+          {/* First Name & Last Name in 2-Column Grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+            <div className="form-group">
+              <label className="form-label">
+                First Name <span className="req">*</span>
+              </label>
+              <input
+                type="text"
+                className="form-input"
+                placeholder="e.g. Rahul"
+                value={formData.fname}
+                onChange={(e) => setFormData({ ...formData, fname: e.target.value })}
+              />
+              {errors.fname && <p style={{ color: 'var(--terracotta-600)', fontSize: '0.78rem', marginTop: 4 }}>{errors.fname}</p>}
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">
+                Last Name <span className="req">*</span>
+              </label>
+              <input
+                type="text"
+                className="form-input"
+                placeholder="e.g. Sharma"
+                value={formData.lname}
+                onChange={(e) => setFormData({ ...formData, lname: e.target.value })}
+              />
+              {errors.lname && <p style={{ color: 'var(--terracotta-600)', fontSize: '0.78rem', marginTop: 4 }}>{errors.lname}</p>}
+            </div>
+          </div>
+
+          {/* Date of Birth (dob) */}
           <div className="form-group">
             <label className="form-label">
               Date of Birth <span className="req">*</span>
@@ -173,10 +209,10 @@ export const ApplyPage: React.FC<ApplyPageProps> = ({ preselectedScheme, onSucce
             <input
               type="date"
               className="form-input"
-              value={formData.dateOfBirth}
-              onChange={(e) => setFormData({ ...formData, dateOfBirth: e.target.value })}
+              value={formData.dob}
+              onChange={(e) => setFormData({ ...formData, dob: e.target.value })}
             />
-            {errors.dateOfBirth && <p style={{ color: 'var(--terracotta-600)', fontSize: '0.78rem', marginTop: 4 }}>{errors.dateOfBirth}</p>}
+            {errors.dob && <p style={{ color: 'var(--terracotta-600)', fontSize: '0.78rem', marginTop: 4 }}>{errors.dob}</p>}
           </div>
 
           {/* Scheme Selection */}

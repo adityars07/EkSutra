@@ -1,16 +1,24 @@
 export interface ApplicationFormInput {
-  applicantName: string;
-  citizenId: string;
-  dateOfBirth: string;
+  applicationId?: string;
+  beneficiaryId: string;
+  fname: string;
+  lname: string;
+  dob: string;
   schemeCode: string;
   consentGiven: boolean;
+
+  // Backward compatibility fields
+  citizenId?: string;
+  applicantName?: string;
+  dateOfBirth?: string;
 }
 
 export interface ApplicationRecord {
   id?: string;
   applicationId: string;
-  citizenId: string;
-  applicantName: string;
+  beneficiaryId?: string;
+  citizenId?: string;
+  applicantName?: string;
   fname?: string;
   lname?: string;
   dob?: string;

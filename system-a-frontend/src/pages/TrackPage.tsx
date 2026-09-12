@@ -20,7 +20,7 @@ export const TrackPage: React.FC<TrackPageProps> = ({ initialId, onNavigate }) =
     if (e) e.preventDefault();
     const query = searchId.trim();
     if (!query) {
-      setErrorMsg('Please enter a valid Application ID (e.g. APP-10042) or Citizen ID.');
+      setErrorMsg('Please enter a valid Application ID (e.g. APP-10042) or Beneficiary ID.');
       return;
     }
 
@@ -49,6 +49,11 @@ export const TrackPage: React.FC<TrackPageProps> = ({ initialId, onNavigate }) =
     }
   }, [initialId]);
 
+  const nameDisplay = application
+    ? (application.fname && application.lname ? `${application.fname} ${application.lname}` : (application.applicantName || 'Applicant'))
+    : '';
+  const beneficiaryDisplay = application ? (application.beneficiaryId || application.citizenId || 'N/A') : '';
+
   return (
     <div style={{ maxWidth: 740, margin: '0 auto' }}>
       {/* Title */}
@@ -57,7 +62,7 @@ export const TrackPage: React.FC<TrackPageProps> = ({ initialId, onNavigate }) =
           Track Your Application Status
         </h2>
         <p style={{ color: 'var(--gov-text-muted)', fontSize: '0.88rem', marginTop: 4 }}>
-          Enter your Application Reference ID or Citizen Identifier to view the real-time processing status.
+          Enter your Application Reference ID or Beneficiary Identifier to view real-time processing status.
         </p>
       </div>
 
@@ -69,7 +74,7 @@ export const TrackPage: React.FC<TrackPageProps> = ({ initialId, onNavigate }) =
               type="text"
               className="form-input"
               style={{ paddingLeft: 40, fontSize: '0.96rem' }}
-              placeholder="Enter Application ID (e.g. APP-10042) or Citizen ID..."
+              placeholder="Enter Application ID (e.g. APP-10042) or Beneficiary ID..."
               value={searchId}
               onChange={(e) => setSearchId(e.target.value)}
             />
@@ -102,7 +107,7 @@ export const TrackPage: React.FC<TrackPageProps> = ({ initialId, onNavigate }) =
                 {application.applicationId}
               </h3>
               <p style={{ fontSize: '0.86rem', color: 'var(--gov-text-secondary)', marginTop: 2 }}>
-                Applicant: <strong>{application.applicantName}</strong> &bull; Scheme: <span style={{ fontWeight: 600 }}>{application.schemeCode}</span>
+                Applicant: <strong>{nameDisplay}</strong> &bull; Scheme: <span style={{ fontWeight: 600 }}>{application.schemeCode}</span>
               </p>
             </div>
             <StatusBadge status={application.status} />
@@ -111,8 +116,8 @@ export const TrackPage: React.FC<TrackPageProps> = ({ initialId, onNavigate }) =
           {/* Quick Metrics */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 14, marginBottom: 24 }}>
             <div style={{ background: 'var(--gov-subtle)', padding: 12, borderRadius: 6, border: '1px solid var(--gov-border-medium)' }}>
-              <div style={{ fontSize: '0.72rem', color: 'var(--gov-text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>Citizen ID</div>
-              <div style={{ fontSize: '0.92rem', fontWeight: 600, marginTop: 2 }}>{application.citizenId}</div>
+              <div style={{ fontSize: '0.72rem', color: 'var(--gov-text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>Beneficiary ID</div>
+              <div style={{ fontSize: '0.92rem', fontWeight: 600, marginTop: 2 }}>{beneficiaryDisplay}</div>
             </div>
 
             <div style={{ background: 'var(--gov-subtle)', padding: 12, borderRadius: 6, border: '1px solid var(--gov-border-medium)' }}>

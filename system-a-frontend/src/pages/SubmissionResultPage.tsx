@@ -17,6 +17,9 @@ interface SubmissionResultPageProps {
 
 export const SubmissionResultPage: React.FC<SubmissionResultPageProps> = ({ record, onNavigate }) => {
   const isConsented = record.consentGiven;
+  const nameDisplay = record.fname && record.lname ? `${record.fname} ${record.lname}` : (record.applicantName || 'Applicant');
+  const beneficiaryDisplay = record.beneficiaryId || record.citizenId || 'N/A';
+  const dobDisplay = record.dob || record.dateOfBirth || 'N/A';
 
   return (
     <div style={{ maxWidth: 700, margin: '0 auto' }}>
@@ -82,22 +85,38 @@ export const SubmissionResultPage: React.FC<SubmissionResultPageProps> = ({ reco
             <StatusBadge status={record.status} />
           </div>
 
-          {/* Citizen Details */}
+          {/* Citizen Particulars */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, borderBottom: '1px solid var(--gov-border-medium)', paddingBottom: 12 }}>
             <div>
               <span style={{ fontSize: '0.78rem', color: 'var(--gov-text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>
                 Applicant Name
               </span>
               <div style={{ fontSize: '0.95rem', fontWeight: 600, marginTop: 2 }}>
-                {record.applicantName}
+                {nameDisplay}
               </div>
             </div>
             <div>
               <span style={{ fontSize: '0.78rem', color: 'var(--gov-text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>
-                Citizen ID / Identifier
+                Beneficiary ID
               </span>
               <div style={{ fontSize: '0.95rem', fontWeight: 600, marginTop: 2 }}>
-                {record.citizenId}
+                {beneficiaryDisplay}
+              </div>
+            </div>
+            <div>
+              <span style={{ fontSize: '0.78rem', color: 'var(--gov-text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>
+                Date of Birth
+              </span>
+              <div style={{ fontSize: '0.95rem', fontWeight: 600, marginTop: 2 }}>
+                {dobDisplay}
+              </div>
+            </div>
+            <div>
+              <span style={{ fontSize: '0.78rem', color: 'var(--gov-text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>
+                Scheme Code
+              </span>
+              <div style={{ fontSize: '0.95rem', fontWeight: 600, marginTop: 2, fontFamily: 'var(--font-mono)' }}>
+                {record.schemeCode}
               </div>
             </div>
           </div>
