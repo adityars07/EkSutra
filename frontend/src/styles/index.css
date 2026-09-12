@@ -1,105 +1,119 @@
-/* EkSutra — Government of Maharashtra Design System */
+/* EkSutra — Government of Maharashtra "Sahyadri" Design System */
 
 :root {
-  /* Color Palette - Maharashtra Civic & Modern Interoperability */
-  --primary-50: #EEF2FF;
-  --primary-100: #E0E7FF;
-  --primary-200: #C7D2FE;
-  --primary-400: #818CF8;
-  --primary-500: #6366F1;
-  --primary-600: #4F46E5;
-  --primary-700: #4338CA;
-  --primary-900: #1E1B4B;
+  /* Sahyadri Palette: Deep Forest, Ivory, Antique Gold & Terracotta */
+  --forest-950: #0B1612;
+  --forest-900: #12231E;
+  --forest-800: #1B3B32;
+  --forest-700: #254E43;
+  --forest-600: #316356;
+  --forest-500: #427E6F;
+  --forest-200: #C5D8D2;
+  --forest-100: #E4ECE9;
+  --forest-50:  #F2F6F4;
 
-  --saffron-500: #FF6F00;
-  --saffron-600: #E65100;
-  --saffron-light: #FFF3E0;
+  --ivory-50:  #FAF8F5;
+  --ivory-100: #F6F3EC;
+  --ivory-200: #ECE8DD;
+  --ivory-300: #DDD8CA;
+  --ivory-400: #C8C2B3;
 
-  --emerald-500: #10B981;
-  --emerald-600: #059669;
-  --emerald-light: #ECFDF5;
+  --stone-900: #1A1916;
+  --stone-800: #2E2C27;
+  --stone-700: #4A463D;
+  --stone-600: #666155;
+  --stone-500: #8C867A;
+  --stone-400: #AAA496;
 
-  --cyan-500: #06B6D4;
-  --cyan-600: #0891B2;
-  --cyan-light: #ECFEFF;
+  --gold-800: #735620;
+  --gold-700: #8B6A2B;
+  --gold-600: #A68138;
+  --gold-500: #B8934A;
+  --gold-400: #C7A45C;
+  --gold-200: #EADCBF;
+  --gold-100: #F7F2E6;
 
-  --amber-500: #F59E0B;
-  --amber-600: #D97706;
-  --amber-light: #FFFBEB;
+  --terracotta-700: #8C3B2A;
+  --terracotta-600: #A84835;
+  --terracotta-500: #C05A46;
+  --terracotta-100: #F9EBE8;
 
-  --rose-500: #F43F5E;
-  --rose-600: #E11D48;
-  --rose-light: #FFF1F2;
-
-  /* Fonts */
-  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-devanagari: 'Noto Sans Devanagari', sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-devanagari: 'Noto Sans Devanagari', 'Mukta', sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', monospace;
 
   /* Transitions */
-  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-bounce: 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  --transition-fast: 160ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-normal: 280ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: 450ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Restrained Border Radii */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
 }
 
-/* Light Theme (Default Civic Portal) */
+/* Light Theme (Default Sahyadri Civic Gateway) */
 [data-theme="light"], :root {
-  --bg-main: #F4F6FB;
+  --bg-main: #F6F3EC;
   --bg-surface: #FFFFFF;
-  --bg-surface-elevated: #FFFFFF;
-  --bg-surface-translucent: rgba(255, 255, 255, 0.85);
-  --bg-subtle: #F1F5F9;
-  --bg-hover: #E2E8F0;
+  --bg-surface-elevated: #FAF8F5;
+  --bg-surface-translucent: rgba(255, 255, 255, 0.94);
+  --bg-subtle: #ECE8DD;
+  --bg-hover: #E2DDCF;
 
-  --border-subtle: #E2E8F0;
-  --border-medium: #CBD5E1;
-  --border-highlight: rgba(79, 70, 229, 0.3);
+  --border-subtle: #E2DDD0;
+  --border-medium: #CDC7B8;
+  --border-highlight: #B8934A;
 
-  --text-primary: #0F172A;
-  --text-secondary: #475569;
-  --text-muted: #64748B;
-  --text-inverse: #FFFFFF;
+  --text-primary: #1F2623;
+  --text-secondary: #4A5450;
+  --text-muted: #78827D;
+  --text-inverse: #F6F3EC;
 
-  --govt-header-bg: #0A2540;
-  --govt-header-text: #FFFFFF;
+  --govt-header-bg: #1B3B32;
+  --govt-header-text: #F6F3EC;
 
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
-  --shadow-glow-primary: 0 0 20px rgba(99, 102, 241, 0.2);
-  --shadow-glow-emerald: 0 0 20px rgba(16, 185, 129, 0.2);
+  --shadow-sm: 0 1px 3px 0 rgba(27, 59, 50, 0.05);
+  --shadow-md: 0 4px 10px -1px rgba(27, 59, 50, 0.07), 0 2px 4px -2px rgba(27, 59, 50, 0.04);
+  --shadow-lg: 0 12px 24px -3px rgba(27, 59, 50, 0.09), 0 4px 8px -4px rgba(27, 59, 50, 0.04);
 }
 
-/* Dark Theme (Enterprise Interoperability Console) */
+/* Dark Theme (Shifted to ~60% Charcoal/Black + ~25% Deep Forest Green + ~10% Warm Slate + ~5% Muted Gold) */
 [data-theme="dark"] {
-  --bg-main: #0B1120;
-  --bg-surface: #131E35;
-  --bg-surface-elevated: #1A2846;
-  --bg-surface-translucent: rgba(19, 30, 53, 0.85);
-  --bg-subtle: #1E293B;
-  --bg-hover: #27354E;
+  --bg-main: #0B0E0D;                     /* Near-black charcoal main background (~60%) */
+  --bg-surface: #131715;                  /* Cards: sleek dark charcoal (NOT green!) */
+  --bg-surface-elevated: #1B211E;         /* Elevated surfaces/dropdowns */
+  --bg-surface-translucent: rgba(19, 23, 21, 0.95);
+  --bg-subtle: #1E2522;                  /* Warm dark slate/grey for subtle containers & headers (~10%) */
+  --bg-hover: #27302C;                   /* Interactive element hover background */
 
-  --border-subtle: #1E2E4B;
-  --border-medium: #2C3E61;
-  --border-highlight: rgba(129, 140, 248, 0.35);
+  /* Deep Forest Green (~25%) reserved for nested panels, selected headers & key accent panels */
+  --bg-forest-panel: #162E27;
+  --bg-forest-elevated: #1F3B32;
+  --forest-accent: #1B3B32;
 
-  --text-primary: #F8FAFC;
-  --text-secondary: #94A3B8;
-  --text-muted: #64748B;
-  --text-inverse: #0F172A;
+  --border-subtle: #222B27;              /* Muted dark grey border */
+  --border-medium: #303D37;              /* Medium dark grey border */
+  --border-highlight: #B8934A;           /* Muted Antique Gold accent (~5%) */
 
-  --govt-header-bg: #070D19;
-  --govt-header-text: #F8FAFC;
+  --text-primary: #F6F3EC;               /* Warm Ivory primary text */
+  --text-secondary: #ABB7B2;             /* Muted warm grey secondary text */
+  --text-muted: #798782;                  /* Muted slate secondary text */
+  --text-inverse: #0B0E0D;
 
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 12px 25px rgba(0, 0, 0, 0.5);
-  --shadow-glow-primary: 0 0 25px rgba(99, 102, 241, 0.35);
-  --shadow-glow-emerald: 0 0 25px rgba(16, 185, 129, 0.35);
+  --govt-header-bg: #122A22;              /* Header: deep forest green institutional accent */
+  --govt-header-text: #F6F3EC;
+
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.6);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.7);
+  --shadow-lg: 0 14px 30px rgba(0, 0, 0, 0.8);
 }
 
-/* Base Styles */
+/* Base Reset */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -110,7 +124,7 @@ body {
   font-family: var(--font-sans);
   background-color: var(--bg-main);
   color: var(--text-primary);
-  line-height: 1.5;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
@@ -118,13 +132,13 @@ body {
   transition: background-color var(--transition-normal), color var(--transition-normal);
 }
 
-/* Accessibility & Focus Outline */
+/* Accessibility Focus */
 :focus-visible {
-  outline: 2px solid var(--primary-500);
+  outline: 2px solid var(--gold-500);
   outline-offset: 2px;
 }
 
-/* Scrollbar */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -140,22 +154,35 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-400);
+  background: var(--gold-500);
 }
 
-/* Typography Utilities */
+/* Typography Hierarchy */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
   font-weight: 700;
   color: var(--text-primary);
   letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+h1 {
+  font-size: 2.1rem;
+}
+
+h2 {
+  font-size: 1.45rem;
+}
+
+h3 {
+  font-size: 1.15rem;
 }
 
 .font-marathi {
   font-family: var(--font-devanagari);
 }
 
-/* Common Layout Components */
+/* Layout Containers */
 .app-container {
   display: flex;
   min-height: 100vh;
@@ -182,29 +209,31 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .page-body {
-  padding: 24px;
+  padding: 32px 40px;
   max-width: 1440px;
   margin: 0 auto;
   width: 100%;
 }
 
-/* Government Top Utility Bar */
+/* Official Government Top Utility Bar */
 .govt-top-bar {
-  background-color: #071727;
-  color: #CBD5E1;
+  background-color: #0B1612;
+  color: #DDD8CA;
   font-size: 0.78rem;
-  padding: 6px 24px;
+  padding: 6px 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(184, 147, 74, 0.2);
 }
 
 .govt-top-bar-left {
   display: flex;
   align-items: center;
-  gap: 16px;
-  font-weight: 500;
+  gap: 12px;
+  font-weight: 600;
+  color: #F6F3EC;
+  letter-spacing: 0.01em;
 }
 
 .govt-flag-strip {
@@ -214,6 +243,7 @@ h1, h2, h3, h4, h5, h6 {
   flex-direction: column;
   border-radius: 1px;
   overflow: hidden;
+  box-shadow: 0 0 1px rgba(0,0,0,0.5);
 }
 .govt-flag-strip .strip-saffron { background: #FF9933; flex: 1; }
 .govt-flag-strip .strip-white { background: #FFFFFF; flex: 1; }
@@ -226,33 +256,39 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .govt-btn-util {
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #E2E8F0;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 0.75rem;
+  background: rgba(246, 243, 236, 0.08);
+  border: 1px solid rgba(246, 243, 236, 0.18);
+  color: #F6F3EC;
+  padding: 3px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 0.76rem;
+  font-weight: 600;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   transition: var(--transition-fast);
 }
 
 .govt-btn-util:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(246, 243, 236, 0.18);
   color: #FFFFFF;
+  border-color: var(--gold-500);
 }
 
-/* Official Header */
+/* Official Government Brand Header */
 .govt-brand-header {
   background: var(--govt-header-bg);
   color: var(--govt-header-text);
-  padding: 12px 24px;
+  padding: 14px 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   position: sticky;
   top: 0;
   z-index: 40;
+  border-bottom: 2px solid var(--gold-500);
 }
 
 .govt-brand-left {
@@ -267,30 +303,68 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   align-items: center;
   justify-content: center;
+  background: rgba(246, 243, 236, 0.08);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(184, 147, 74, 0.3);
+  transition: var(--transition-fast);
+}
+
+.govt-logo-badge:hover {
+  background: rgba(246, 243, 236, 0.15);
+  border-color: var(--gold-500);
 }
 
 .govt-title-group h1 {
   font-size: 1.35rem;
   font-weight: 800;
-  color: #FFFFFF;
+  color: #F6F3EC;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .govt-title-group p {
   font-size: 0.78rem;
-  color: #94A3B8;
+  color: #DDD8CA;
   font-weight: 500;
+  margin-top: 1px;
 }
 
 .badge-msins {
-  background: linear-gradient(135deg, var(--saffron-500), #E65100);
-  color: #FFFFFF;
-  font-size: 0.68rem;
+  background: var(--gold-500);
+  color: #1A1916;
+  font-size: 0.65rem;
   font-weight: 700;
-  padding: 2px 6px;
-  border-radius: 4px;
-  letter-spacing: 0.05em;
+  padding: 2px 8px;
+  border-radius: 3px;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
+}
+
+/* ==========================================================================
+   Scroll-Triggered Reveal Animations
+   ========================================================================== */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.scroll-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 80ms; }
+.reveal-delay-2 { transition-delay: 160ms; }
+.reveal-delay-3 { transition-delay: 240ms; }
+.reveal-delay-4 { transition-delay: 320ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }

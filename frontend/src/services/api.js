@@ -106,11 +106,36 @@ export const api = {
       return mockStore.findByApplicationId(id);
     },
 
+    async getStatus(id) {
+      if (api.isLiveMode()) {
+        try {
+          const res = await fetch(`/api/v1/applications/${encodeURIComponent(id)}/status`, { headers: api.getHeaders() });
+          if (res.ok) return await res.json();
+        } catch (e) {
+          console.warn('Live getStatus failed', e);
+        }
+      }
+      const app = mockStore.findByApplicationId(id);
+      return app ? { applicationId: app.applicationId, status: app.applicationStatus } : null;
+    },
+
+    async getStatusHistory(id) {
+      if (api.isLiveMode()) {
+        try {
+          const res = await fetch(`/api/v1/applications/${encodeURIComponent(id)}/status-history`, { headers: api.getHeaders() });
+          if (res.ok) return await res.json();
+        } catch (e) {
+          console.warn('Live getStatusHistory failed', e);
+        }
+      }
+      const app = mockStore.findByApplicationId(id);
+      return app ? app.statusHistory || [] : [];
+    },
+
     async search(query) {
       if (api.isLiveMode()) {
         try {
-          // Backend controller accepts @RequestParam String qurey
-          const res = await fetch(`/api/v1/applications/search?qurey=${encodeURIComponent(query)}`, { headers: api.getHeaders() });
+          const res = await fetch(`/api/v1/applications/search?query=${encodeURIComponent(query)}`, { headers: api.getHeaders() });
           if (res.ok) return await res.json();
         } catch (e) {
           console.warn('Live search failed', e);
@@ -151,12 +176,55 @@ export const api = {
       return mockStore.createActionRequest(applicationId, { action, reason });
     },
 
-    async getActionRequests() {
-      // Return action requests from mock store
-      return mockStore.getActionRequests();
+    async getActionRequests(status) {
+      if (api.isLiveMode()) {
+        try {
+          const url = status 
+            ? `/api/v1/admin/action-requests?status=${encodeURIComponent(status)}`
+            : '/api/v1/admin/action-requests';
+          const res = await fetch(url, { headers: api.getHeaders() });
+          if (res.ok) return await res.json();
+        } catch (e) {
+          console.warn('Live getActionRequests failed', e);
+        }
+      }
+      const requests = mockStore.getActionRequests();
+      if (status) {
+        return requests.filter(r => r.status === status);
+      }
+      return requests;
+    },
+
+    async getActionRequestsByApplicationId(applicationId) {
+      if (api.isLiveMode()) {
+        try {
+          const res = await fetch(`/api/v1/applications/${encodeURIComponent(applicationId)}/action-requests`, { headers: api.getHeaders() });
+          if (res.ok) return await res.json();
+        } catch (e) {
+          console.warn('Live getActionRequestsByApplicationId failed', e);
+        }
+      }
+      return mockStore.getActionRequests().filter(r => r.applicationId === applicationId);
     },
 
     async reviewActionRequest(requestId, decision, comment) {
+      if (api.isLiveMode()) {
+        try {
+          const res = await fetch(`/api/v1/admin/action-request/${encodeURIComponent(requestId)}`, {
+            method: 'PATCH',
+            headers: api.getHeaders(),
+            body: JSON.stringify({ decision, comment }),
+          });
+          if (res.ok) return await res.json();
+          const err = await res.json().catch(() => ({ message: 'Review request failed' }));
+          throw new Error(err.message || 'Review failed on server');
+        } catch (e) {
+          console.warn('Live reviewActionRequest failed, using fallback', e);
+          if (e.message && !e.message.includes('fetch')) {
+            throw e;
+          }
+        }
+      }
       return mockStore.reviewActionRequest(requestId, decision, comment);
     }
   },

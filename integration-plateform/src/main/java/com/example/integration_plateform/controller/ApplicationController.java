@@ -17,8 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.integration_plateform.model.StatusHistory;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,7 +34,6 @@ public class ApplicationController {
 
     @GetMapping
     List<ApplicationRecord> getApplication(){
-
         return applicationPersistenceService.getApplications();
     }
 
@@ -42,11 +42,34 @@ public class ApplicationController {
         return ResponseEntity.of(applicationPersistenceService.findByApplicationId(applicationId));
     }
 
+    @GetMapping("/{applicationId}/status")
+    public ResponseEntity<Map<String, Object>> getApplicationStatus(@PathVariable String applicationId) {
+        return applicationPersistenceService.findByApplicationId(applicationId)
+                .map(app -> ResponseEntity.ok(Map.<String, Object>of(
+                        "applicationId", app.getApplicationId(),
+                        "status", app.getApplicationStatus(),
+                        "updatedAt", app.getUpdatedAt() != null ? app.getUpdatedAt().toString() : (app.getCreatedAt() != null ? app.getCreatedAt().toString() : "")
+                )))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/{applicationId}/status-history")
+    public ResponseEntity<List<StatusHistory>> getStatusHistory(@PathVariable String applicationId) {
+        return applicationPersistenceService.findByApplicationId(applicationId)
+                .map(app -> ResponseEntity.ok(app.getStatusHistory() != null ? app.getStatusHistory() : List.<StatusHistory>of()))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/{applicationId}/action-requests")
+    public List<ApplicationActionRequest> getActionRequestsByApplicationId(@PathVariable String applicationId) {
+        return applicationActionRequestService.getRequestsByApplicationId(applicationId);
+    }
+
     @PatchMapping(
             value = "/{applicationId}/status",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApplicationRecord> updateApplicationStatus(
             @PathVariable String applicationId,
             @Valid @RequestBody UpdateApplicationStatusRequest request

@@ -188,10 +188,10 @@ export const ApplicationDetailsModal = ({ application, onClose, onOpenStatusModa
                     <div className="timeline-content">
                       <div className="timeline-header">
                         <strong style={{ color: 'var(--text-primary)' }}>
-                          Status: <StatusBadge status={history.newStatus} />
+                          Status: <StatusBadge status={history.status || history.newStatus} />
                         </strong>
                         <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>
-                          {history.timestamp ? new Date(history.timestamp).toLocaleString() : 'Just now'}
+                          {history.changedAt || history.timestamp ? new Date(history.changedAt || history.timestamp).toLocaleString() : 'Just now'}
                         </span>
                       </div>
                       <div style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginTop: 4 }}>

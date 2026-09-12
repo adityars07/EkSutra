@@ -1,66 +1,86 @@
-/* EkSutra — Page Specific Layouts & Modules */
+/* EkSutra — Page Layouts & Modules (Sahyadri Theme) */
 
 /* ==========================================================================
-   Citizen Public Gateway & Landing View
+   Citizen Public Gateway & Landing View (Sahyadri Hero)
    ========================================================================== */
-.citizen-hero-banner {
-  background: linear-gradient(135deg, #0A2540 0%, #0F3B66 50%, #065A60 100%);
-  color: #FFFFFF;
-  padding: 48px 24px;
-  border-radius: 16px;
-  margin-bottom: 32px;
+.citizen-hero-section {
   position: relative;
+  border-radius: var(--radius-xl);
+  margin-bottom: 40px;
   overflow: hidden;
   box-shadow: var(--shadow-lg);
+  border-top: 4px solid var(--gold-500);
+  background-color: var(--forest-900);
+  min-height: 480px;
+  display: flex;
+  align-items: center;
+}
+
+.hero-slider-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 8s linear;
+  will-change: opacity, transform;
+}
+
+.hero-overlay-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, rgba(11, 22, 18, 0.94) 0%, rgba(18, 35, 30, 0.8) 55%, rgba(18, 35, 30, 0.45) 100%);
+  z-index: 2;
 }
 
 .citizen-hero-content {
-  max-width: 720px;
   position: relative;
-  z-index: 2;
+  z-index: 3;
+  padding: 48px 48px;
+  max-width: 780px;
 }
 
 .citizen-hero-badge {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  color: #FFFFFF;
-  padding: 4px 12px;
-  border-radius: 20px;
+  gap: 8px;
+  background: rgba(246, 243, 236, 0.12);
+  border: 1px solid rgba(184, 147, 74, 0.4);
+  color: #F6F3EC;
+  padding: 5px 14px;
+  border-radius: var(--radius-sm);
   font-size: 0.78rem;
   font-weight: 700;
-  letter-spacing: 0.04em;
-  margin-bottom: 16px;
+  letter-spacing: 0.03em;
+  margin-bottom: 20px;
 }
 
 .citizen-hero-title {
-  font-size: 2.2rem;
+  font-size: 2.35rem;
   font-weight: 800;
-  line-height: 1.2;
-  margin-bottom: 12px;
-  color: #FFFFFF;
+  line-height: 1.22;
+  margin-bottom: 16px;
+  color: #F6F3EC;
+  letter-spacing: -0.02em;
 }
 
 .citizen-hero-desc {
-  font-size: 1rem;
-  color: #CBD5E1;
-  margin-bottom: 24px;
-  line-height: 1.6;
+  font-size: 1.02rem;
+  color: #DDD8CA;
+  margin-bottom: 30px;
+  line-height: 1.65;
 }
 
 /* Unified Tracker Search Box */
 .citizen-tracker-box {
-  background: var(--bg-surface);
-  border: 2px solid var(--border-medium);
-  border-radius: 12px;
-  padding: 8px 8px 8px 16px;
+  background: #F6F3EC;
+  border: 2px solid var(--gold-500);
+  border-radius: var(--radius-md);
+  padding: 6px 6px 6px 16px;
   display: flex;
   align-items: center;
   gap: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  max-width: 640px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  max-width: 680px;
 }
 
 .citizen-tracker-input {
@@ -68,74 +88,123 @@
   border: none;
   background: transparent;
   font-size: 0.95rem;
-  color: var(--text-primary);
+  color: #1A1916;
   outline: none;
+  font-family: var(--font-sans);
+  font-weight: 500;
 }
 
-/* Scheme Quick Access Grid */
+.citizen-tracker-input::placeholder {
+  color: #78827D;
+}
+
+/* Slider Controls Bar */
+.hero-slider-controls {
+  position: absolute;
+  bottom: 24px;
+  right: 36px;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(11, 22, 18, 0.65);
+  backdrop-filter: blur(6px);
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(184, 147, 74, 0.3);
+}
+
+.slider-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(246, 243, 236, 0.35);
+  border: none;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.slider-dot.active {
+  background: var(--gold-500);
+  transform: scale(1.3);
+}
+
+/* Scheme Directory Grid */
 .schemes-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 20px;
-  margin-bottom: 36px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-bottom: 44px;
 }
 
 .scheme-card {
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
-  border-radius: 12px;
-  padding: 20px;
+  border-radius: var(--radius-lg);
+  padding: 24px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: all var(--transition-normal);
-  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
 }
 
 .scheme-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-2px);
   box-shadow: var(--shadow-md);
-  border-color: var(--primary-500);
+  border-color: var(--gold-500);
 }
 
 .scheme-card-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
-  background: var(--primary-50);
-  color: var(--primary-600);
+  width: 46px;
+  height: 46px;
+  border-radius: var(--radius-md);
+  background: var(--forest-50);
+  color: var(--forest-800);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
+  border: 1px solid var(--forest-100);
+}
+
+[data-theme="dark"] .scheme-card-icon {
+  background: rgba(37, 78, 67, 0.25);
+  color: #C5D8D2;
+  border-color: rgba(37, 78, 67, 0.4);
 }
 
 .scheme-dept-tag {
   font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
-  color: var(--saffron-600);
-  margin-bottom: 4px;
+  color: var(--gold-700);
+  margin-bottom: 6px;
+  letter-spacing: 0.04em;
+}
+
+[data-theme="dark"] .scheme-dept-tag {
+  color: var(--gold-400);
 }
 
 .scheme-card-title {
   font-size: 1.05rem;
   font-weight: 700;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
+  color: var(--text-primary);
 }
 
 .scheme-card-desc {
-  font-size: 0.84rem;
+  font-size: 0.85rem;
   color: var(--text-muted);
-  line-height: 1.5;
-  margin-bottom: 16px;
+  line-height: 1.55;
+  margin-bottom: 18px;
   flex: 1;
 }
 
-/* Dignitaries & Leadership Grid */
+/* Dignitaries & Leadership Section */
 .dignitary-section {
-  margin-top: 40px;
-  margin-bottom: 40px;
+  margin-top: 44px;
+  margin-bottom: 44px;
 }
 
 .dignitary-grid {
@@ -147,8 +216,8 @@
 .dignitary-card {
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
-  border-radius: 12px;
-  padding: 16px;
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
   display: flex;
   align-items: center;
   gap: 16px;
@@ -156,22 +225,30 @@
 }
 
 .dignitary-avatar {
-  width: 68px;
-  height: 68px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
-  border: 2px solid var(--primary-200);
+  border: 2px solid var(--gold-500);
   object-fit: cover;
   background: var(--bg-subtle);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--primary-600);
+  color: var(--forest-800);
   font-weight: 700;
+  font-size: 0.95rem;
+  flex-shrink: 0;
+}
+
+[data-theme="dark"] .dignitary-avatar {
+  color: #C5D8D2;
 }
 
 .dignitary-details h4 {
   font-size: 0.95rem;
+  font-weight: 700;
   margin-bottom: 2px;
+  color: var(--text-primary);
 }
 
 .dignitary-details p {
@@ -200,7 +277,7 @@
 
 .timeline-item {
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .timeline-item:last-child {
@@ -215,30 +292,31 @@
   height: 20px;
   border-radius: 50%;
   background: var(--bg-surface);
-  border: 2px solid var(--primary-500);
+  border: 2px solid var(--forest-700);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .timeline-dot.completed {
-  background: var(--emerald-500);
-  border-color: var(--emerald-500);
-  color: #FFFFFF;
+  background: var(--forest-700);
+  border-color: var(--forest-700);
+  color: #F6F3EC;
 }
 
 .timeline-content {
   background: var(--bg-subtle);
   border: 1px solid var(--border-subtle);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   padding: 12px 16px;
 }
 
 .timeline-header {
   display: flex;
   justify-content: space-between;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   margin-bottom: 4px;
+  color: var(--text-primary);
 }
 
 /* ==========================================================================
@@ -247,15 +325,15 @@
 .health-meters-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: 20px;
+  margin-bottom: 28px;
 }
 
 .meter-card {
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
-  border-radius: 12px;
-  padding: 18px;
+  border-radius: var(--radius-lg);
+  padding: 20px;
 }
 
 .meter-header {
@@ -275,7 +353,7 @@
 
 .meter-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--emerald-500), var(--primary-500));
+  background: var(--forest-700);
   border-radius: 4px;
   transition: width var(--transition-normal);
 }
@@ -284,11 +362,11 @@
    Login / Auth Portal
    ========================================================================== */
 .auth-wrapper {
-  min-height: calc(100vh - 120px);
+  min-height: calc(100vh - 140px);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  padding: 32px 20px;
 }
 
 .auth-card {
@@ -296,15 +374,16 @@
   max-width: 440px;
   background: var(--bg-surface);
   border: 1px solid var(--border-medium);
-  border-radius: 16px;
-  padding: 32px;
+  border-radius: var(--radius-xl);
+  padding: 36px;
   box-shadow: var(--shadow-lg);
+  border-top: 4px solid var(--gold-500);
 }
 
 .auth-demo-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 12px;
   margin-top: 16px;
   padding-top: 16px;
   border-top: 1px dashed var(--border-medium);
