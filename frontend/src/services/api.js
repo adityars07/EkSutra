@@ -18,7 +18,8 @@ export const api = {
   },
 
   isLiveMode() {
-    return localStorage.getItem('eksutra_api_mode') === 'live';
+    const saved = localStorage.getItem('eksutra_api_mode');
+    return saved !== null ? saved === 'live' : true;
   },
 
   async pingBackend() {
@@ -44,13 +45,20 @@ export const api = {
             const err = await res.json().catch(() => ({ message: 'Login failed' }));
             throw new Error(err.message || 'Invalid username or password');
           }
-          return await res.json();
+          const data = await res.json();
+          if (data && data.token) {
+            localStorage.setItem('eksutra_token', data.token);
+          }
+          return data;
         } catch (e) {
-          console.warn('Live API call failed, falling back to mock authentication', e);
+          if (e.message && e.message !== 'Failed to fetch') {
+            throw e;
+          }
+          console.warn('Live API call failed (offline), falling back to mock authentication', e);
         }
       }
 
-      // Mock auth simulation
+      // Mock auth simulation (offline only)
       const role = credentials.username.toLowerCase().includes('admin') ? 'ADMIN' : 'AUTHORITY';
       return {
         username: credentials.username,
