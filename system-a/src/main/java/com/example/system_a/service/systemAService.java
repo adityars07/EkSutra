@@ -43,18 +43,14 @@ public class systemAService {
             appId = "APP-" + (10000 + new Random().nextInt(90000));
         }
 
-        String fullName = dto.getApplicantName() != null ? dto.getApplicantName().trim() : "Citizen";
-        String[] nameParts = fullName.split("\\s+", 2);
-        String fname = nameParts[0];
-        String lname = nameParts.length > 1 ? nameParts[1] : "";
 
         Application app = Application.builder()
                 .applicationId(appId)
-                .citizenId(dto.getCitizenId())
-                .applicantName(fullName)
-                .fname(fname)
-                .lname(lname)
-                .dob(dto.getDateOfBirth())
+                .citizenId(dto.getBeneficiaryId())
+                .applicantName(dto.getFname() + " " + dto.getLname())
+                .fname(dto.getFname())
+                .lname(dto.getLname())
+                .dob(dto.getDob())
                 .schemeCode(dto.getSchemeCode())
                 .consentGiven(dto.isConsentGiven())
                 .createdAt(LocalDateTime.now())
@@ -62,42 +58,73 @@ public class systemAService {
                 .build();
 
         if (dto.isConsentGiven()) {
-            // Citizen GRANTED consent -> Send to EK SUTRA middleware
+
+            // Citizen GRANTED consent → Send to EK SUTRA middleware
             try {
+
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(MediaType.APPLICATION_JSON);
 
                 Map<String, Object> payload = new HashMap<>();
-                payload.put("applicationId", appId);
-                payload.put("beneficiaryId", dto.getCitizenId() != null ? dto.getCitizenId() : "CIT-" + appId);
-                payload.put("fname", fname);
-                payload.put("lname", !lname.isBlank() ? lname : "Applicant");
-                payload.put("dob", dto.getDateOfBirth() != null ? dto.getDateOfBirth().toString() : "2000-01-01");
-                payload.put("schemeCode", dto.getSchemeCode() != null ? dto.getSchemeCode() : "MSINS-STARTUP-2026");
 
-                HttpEntity<Map<String, Object>> request = new HttpEntity<>(payload, headers);
-                Map<?, ?> response = restTemplate.postForObject(EKSUTRA_URL, request, Map.class);
+                payload.put("applicationId", appId);
+                payload.put("beneficiaryId", dto.getBeneficiaryId());
+                payload.put("fname", dto.getFname());
+                payload.put("lname", dto.getLname());
+                payload.put("dob", dto.getDob());
+                payload.put("schemeCode", dto.getSchemeCode());
+                payload.put("consentGiven", dto.isConsentGiven());
+
+                HttpEntity<Map<String, Object>> request =
+                        new HttpEntity<>(payload, headers);
+
+                Map<?, ?> response =
+                        restTemplate.postForObject(
+                                EKSUTRA_URL,
+                                request,
+                                Map.class
+                        );
 
                 if (response != null) {
+
                     app.setStatus("ELIGIBILITY_VERIFIED");
                     app.setCrossSystemVerification("COMPLETED");
+
                     Object eligible = response.get("eligible");
-                    app.setOverallEligibility(eligible instanceof Boolean ? (Boolean) eligible : true);
-                    app.setCorrelationId((String) response.get("correlationId"));
+
+                    app.setOverallEligibility(
+                            eligible instanceof Boolean
+                                    ? (Boolean) eligible
+                                    : true
+                    );
+
+                    app.setCorrelationId(
+                            (String) response.get("correlationId")
+                    );
+
                     app.setSystems(response.get("systems"));
-                } else {
-                    app.setStatus("ELIGIBILITY_VERIFIED");
-                    app.setCrossSystemVerification("COMPLETED");
-                    app.setOverallEligibility(true);
+
                 }
+
             } catch (Exception e) {
-                // In case EkSutra service is temporarily unreachable, record verification state gracefully
-                app.setStatus("ELIGIBILITY_VERIFIED");
-                app.setCrossSystemVerification("COMPLETED");
-                app.setOverallEligibility(true);
-                app.setCorrelationId("EKS-SIM-" + UUID.randomUUID().toString().substring(0, 8));
+
+                // Don't pretend integration succeeded if EK SUTRA is down
+                app.setStatus("RECEIVED");
+                app.setCrossSystemVerification("FAILED");
+                app.setOverallEligibility(null);
+
+                app.setCorrelationId(
+                        "EKS-ERR-" +
+                                UUID.randomUUID()
+                                        .toString()
+                                        .substring(0, 8)
+                );
+
+                // Ideally log this
+                e.printStackTrace();
             }
-        } else {
+
+        }else {
             // Citizen DENIED consent -> Keep in System A only, NO external verification
             app.setStatus("RECEIVED");
             app.setCrossSystemVerification("NOT_INITIATED");
